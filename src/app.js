@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const helmet = require('helmet');
+const session = require('express-session');
+const passport = require('passport');
 
 const PORT = process.env.PORT || 8080;
 
@@ -10,12 +12,22 @@ const morganMiddleware = require('./middlewares/morgan.middleware');
 const logger = require('./logging/logger');
 const { connectToDb } = require('./db');
 
+const sessionConfig = require('./config/sessionConfig');
+
 app.use( helmet() );
 
 require('dotenv').config();
 
 // Add the morgan middleware
 app.use(morganMiddleware);
+
+app.use( session(sessionConfig) );
+
+require('./authentication/auth');
+
+app.use(passport.initialize());
+
+app.use(passport.session());
 
 if (process.env.NODE_ENV !== 'test') {
     connectToDb()

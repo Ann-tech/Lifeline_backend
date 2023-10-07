@@ -11,6 +11,13 @@ const userSchema = new Schema({
         type: String,
         required: [true, "last_name field is required"]
     },
+    username: {
+        type: String,
+        required: [true, "username field is required"],
+        trim: true,
+        lowercase: true,
+        unique: [true, 'username already exists']
+    },
     email: {
         type: String,
         required: [true, "email field is required"],
