@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const helmet = require('helmet');
 
 const PORT = process.env.PORT || 8080;
 
@@ -14,6 +15,10 @@ require('dotenv').config();
 
 // Add the morgan middleware
 app.use(morganMiddleware);
+
+if (process.env.NODE_ENV !== 'test') {
+    connectToDb()
+}
 
 //To parse url encoded data
 app.use(express.urlencoded( {extended: false} ));
