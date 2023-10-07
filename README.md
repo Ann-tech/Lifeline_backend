@@ -2,9 +2,6 @@
 
 An engaging educational game designed to raise awareness about best safety practices during natural disasters
 
-# hng-task2
-A simple Rest API which performs CRUD operations on users resource.
-
 <!-- Back to Top Navigation Anchor -->
 
 <a name="readme-top"></a>
@@ -16,31 +13,7 @@ A simple Rest API which performs CRUD operations on users resource.
 - Express
 - MongoDB
 
-
 ---
-
-<!-- Task Requirements -->
-
-## Requirements
-
-<details>
-
-<summary> <strong>Task Requirements</strong> </summary>
-
-- [x] Functional REST API: The API should successfully perform all CRUD operations.
-- [x] Modelling Diagrams: Clear and accurate UML and E-R diagrams should be provided.
-- [x] Effective Testing: You should successfully test all the CRUD operations exhaustively.
-- [x] Dynamic Parameter Handling: The API should correctly handle and respond to different parameters provided.
-- [x] GitHub Repository: Repository should be well-organized, contain all necessary files, and be publicly accessible.
-- [x] Detailed Documentation: Documentation should provide clear guidance on how to use the API, including setup, request/response formats, and sample usage.
-
-<p align="right"><a href="#readme-top">back to top</a></p>
-
----
-
-</details>
-
-<br>
 
 ## Development
 
