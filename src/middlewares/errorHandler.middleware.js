@@ -12,14 +12,23 @@ const handleDuplicateKeyError = (err, res) => {
 }
 
 const handleValidationError = (err, res) => {
+    console.group(err.errors);
     let errors = Object.values(err.errors).map(el => el.message);
     let fields = Object.values(err.errors).map(el => el.path);
     let code = 400;
 
-    const formattedErrors = errors.join(' ');
+    let formattedErrors;
+    let formattedFields;
 
-    res.status(code).json({success: false, message: formattedErrors, fields: fields.join(', ')});
+    if (errors.length == 1) {
+        formattedErrors = errors.join(' ');
+        formattedFields = fields.join(', ');
+        return res.status(code).json({success: false, message: formattedErrors, field: formattedFields});
+    }
+
+    return res.status(code).json({success: false, messages: errors, fields: fields});
 }
+
 
 async function errorHandler(err, req, res, next) {
     logger.error("An error has occured")
@@ -27,6 +36,8 @@ async function errorHandler(err, req, res, next) {
     try {
         if(err.name === 'ValidationError') return handleValidationError(err, res);
         if(err.code && err.code == 11000) return handleDuplicateKeyError(err, res);
+
+        throw err;
     } catch(err) {
         res.status(500).json({success: false, message: 'An unknown error occurred.'});
     }

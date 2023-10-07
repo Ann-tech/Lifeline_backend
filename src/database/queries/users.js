@@ -18,9 +18,9 @@ async function findUserById(id) {
     }
 }
 
-async function createUser(user) {
+async function createNewUser(userData) {
     try {
-        const user = await User.create(user);
+        const user = await User.create(userData);
         return user;
     } catch(err) {
         throw err;
@@ -30,5 +30,5 @@ async function createUser(user) {
 module.exports = {
     findUserByUsername,
     findUserById,
-    createUser
+    createNewUser
 }

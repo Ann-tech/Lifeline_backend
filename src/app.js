@@ -14,6 +14,8 @@ const { connectToDb } = require('./database/db');
 
 const sessionConfig = require('./config/sessionConfig');
 
+const authRouter = require('./routes/auth.route');
+
 app.use( helmet() );
 
 require('dotenv').config();
@@ -39,6 +41,7 @@ app.use(express.urlencoded( {extended: false} ));
 //To parse data passed via body
 app.use(express.json());
 
+app.use('/api/v1/auth', authRouter);
 
 if (process.env.NODE_ENV !== "test") {
     app.listen(PORT, () => {
