@@ -10,7 +10,7 @@ const errorHandlerMiddleware = require('./middlewares/errorHandler.middleware');
 const morganMiddleware = require('./middlewares/morgan.middleware');
 
 const logger = require('./logging/logger');
-const { connectToDb } = require('./db');
+const { connectToDb } = require('./database/db');
 
 const sessionConfig = require('./config/sessionConfig');
 
