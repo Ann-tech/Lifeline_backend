@@ -18,7 +18,17 @@ async function findUserById(id) {
     }
 }
 
+async function createUser(user) {
+    try {
+        const user = await User.create(user);
+        return user;
+    } catch(err) {
+        throw err;
+    }
+}
+
 module.exports = {
     findUserByUsername,
-    findUserById
+    findUserById,
+    createUser
 }
