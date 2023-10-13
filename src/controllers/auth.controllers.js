@@ -36,7 +36,32 @@ async function httpLoginUser(req, res, next) {
     }})(req, res, next);
 }
 
+async function httpAuthenticateWithGoogle(req, res, next) {
+    console.log("hello")
+    passport.authenticate('google', { scope: ['email', 'profile'] })(req, res, next);
+}
+
+async function httpRedirectUser(req, res, next) {
+    passport.authenticate( 'google', {
+        successRedirect: 'api/v1/auth/google/success',
+        failureRedirect: 'api/v1/auth/google/failure'
+    })(req, res, next);
+}
+
+async function httpSendSuccessResponse(req, res, next) {
+    return res.status(200).json({success: true, message: "Authentication successfuly"})
+}
+
+async function httpSendFailureResponse(req, res, next) {
+    return res.status(401).json({ success: false, message: 'Authentication failed.' });
+}
+
+
 module.exports = {
     httpLoginUser,
-    httpSignupUser
+    httpSignupUser, 
+    httpAuthenticateWithGoogle,
+    httpRedirectUser,
+    httpSendSuccessResponse,
+    httpSendFailureResponse
 }
