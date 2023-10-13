@@ -12,7 +12,7 @@ const promptSchema = new Schema({
     },
     options: [
         {
-            answer: String,
+            text: String,
             nextPrompt: {
                 type: String, 
                 required: true
