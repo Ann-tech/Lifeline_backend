@@ -10,7 +10,7 @@ const promptSchema = new Schema({
         type: String,
         required: true
     },
-    intialPrompt: {
+    initialPrompt: {
         type: Boolean,
         required: true,
         default: false
