@@ -10,11 +10,21 @@ const promptSchema = new Schema({
         type: String,
         required: true
     },
+    intialPrompt: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     options: [
         {
             text: String,
+            isRight: {
+                type: Boolean,
+                required: true,
+                default: false
+            },
             nextPrompt: {
-                type: String, 
+                type: String,
                 required: true
             }
         }
