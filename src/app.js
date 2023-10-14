@@ -1,8 +1,12 @@
 const express = require('express');
 const app = express();
-const helmet = require('helmet');
 const session = require('express-session');
 const passport = require('passport');
+
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
 
 const PORT = process.env.PORT || 8080;
 
@@ -15,8 +19,7 @@ const { connectToDb } = require('./database/db');
 const sessionConfig = require('./config/sessionConfig');
 
 const authRouter = require('./routes/auth.route');
-
-app.use( helmet() );
+const { getInitialPrompt, getNextPrompt } = require('./database/queries/prompts');
 
 require('dotenv').config();
 
@@ -43,8 +46,28 @@ app.use(express.json());
 
 app.use('/api/v1/auth', authRouter);
 
+app.get('/', (req, res) => {
+    
+    res.sendFile(__dirname + '/index.html');
+  
+  });
+
+io.on('connection', async (socket) => {
+    console.log('a user connected');
+    
+    const prompt = await getInitialPrompt();
+    socket.emit('getPrompt', prompt);
+
+    socket.on('getNextPrompt', async promptText => {
+        const nextPrompt = await getNextPrompt(promptText);
+
+        socket.emit('getPrompt', nextPrompt);
+    })
+    
+  });
+
 if (process.env.NODE_ENV !== "test") {
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
         logger.info(`Server is running on PORT ${PORT}`);
     });
 }

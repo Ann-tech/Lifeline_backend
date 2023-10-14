@@ -23,6 +23,53 @@ async function getAllPrompts() {
     }
 }
 
+async function getInitialPrompt() {
+    try {
+        const prompt = await Prompt.findOne({initialPrompt: true});
+        return prompt;
+    } catch(err) {
+        throw err;
+    }
+}
+
+async function findPromptBasedOnText(promptText) {
+    try {
+        const prompt = await Prompt.findOne({ 'options.text': promptText });
+
+        const { options } = prompt;
+        
+
+        for (let i = 0; i < options.length; i++) {
+            const { text, nextPrompt } = options[i];
+            if (text === promptText) return nextPrompt;
+        }
+        
+    } catch(err) {
+        throw err;
+    }
+}
+
+async function getPromptByTitle(title) {
+    try {
+        const prompt = await Prompt.findOne({title});
+        return prompt;
+    } catch(err) {
+        throw err;
+    }
+}
+
+async function getNextPrompt(promptText) {
+    try {
+        const title = await findPromptBasedOnText(promptText);
+
+        const nextPrompt = await getPromptByTitle(title);
+        return nextPrompt;
+    } catch(err) {
+        throw err;
+    }
+}
 module.exports = {
-    insertAllTornadoPrompts
+    insertAllTornadoPrompts,
+    getInitialPrompt,
+    getNextPrompt
 }

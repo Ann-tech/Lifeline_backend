@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Lifeline</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+        }
+        fieldset {
+            width: 50%;
+            margin-top: 30px;
+        }
+        #container > div {
+            margin-top: 20px;
+        }
+
+        @media screen and (max-width: 768px) {
+            fieldset {
+                width: 100%;
+            }
+        }
+    </style>
+    
+</head>
+<body>
+    <fieldset>
+        <legend></legend>
+        <div id="container"></div>
+    </fieldset>
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+        let socket = io();
+
+        const container = document.getElementById('container');
+
+        //get and display prompts
+        socket.on('getPrompt', prompt => {
+            // Clear the content of container before populating new contents
+            container.innerHTML = ''; 
+
+            console.log(prompt);
+            ({question, options} = prompt);
+
+            document.querySelector('legend').innerText = question;
+        
+            for (let i = 0; i < options.length; i++) {
+                //grab text and next prompt
+                ({text, nextPrompt} = options[i]);
+
+                // Create the radio input element
+                const radioInput = document.createElement('input');
+                radioInput.type = 'radio';
+
+                //set id to link radio to label
+                radioInput.setAttribute('id', i);
+
+                //set radio input value
+                radioInput.value = text;
+
+                //create label for input
+                const labelInput = document.createElement('label');
+
+                //link label to radio
+                labelInput.setAttribute('for', i);
+
+                //show text in label
+                labelInput.innerText = text;
+                
+
+                //create element to group input and label
+                const group = document.createElement('div');
+                group.appendChild(radioInput);
+                group.appendChild(labelInput);
+
+                //append group to container
+                container.appendChild(group);
+                console.log(container);
+            }
+        });
+
+        // Add a "change" event listener to the container
+        container.addEventListener('change', function (event) {
+            const selectedRadio = event.target;
+
+            if (selectedRadio.type === 'radio') {
+                const value = selectedRadio.value;
+                socket.emit('getNextPrompt', value);
+            }
+        });
+       
+
+
+        
+        
+    </script>
+</body>
+</html>
