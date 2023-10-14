@@ -20,6 +20,7 @@ const sessionConfig = require('./config/sessionConfig');
 
 const authRouter = require('./routes/auth.route');
 const { getInitialPrompt, getNextPrompt } = require('./database/queries/prompts');
+const { getCurrentPrompt } = require('./services/prompt.service');
 
 require('dotenv').config();
 
@@ -50,13 +51,21 @@ app.get('/', (req, res) => {
     
     res.sendFile(__dirname + '/index.html');
   
-  });
+});
 
 io.on('connection', async (socket) => {
     console.log('a user connected');
+
+    //Get current prompt
+    let currentPrompt;
+    if (!socket.handshake.session) {
+        currentPrompt = await getInitialPrompt();
+    } else {
+        const { _id } = req.user;
+        currentPrompt = await getCurrentPrompt(_id);
+    }
     
-    const prompt = await getInitialPrompt();
-    socket.emit('getPrompt', prompt);
+    socket.emit('getPrompt', currentPrompt);
 
     socket.on('getNextPrompt', async promptText => {
         const nextPrompt = await getNextPrompt(promptText);

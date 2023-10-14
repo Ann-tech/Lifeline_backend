@@ -31,6 +31,11 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    currentTornadoPromptId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Prompt',
+        required: true
+    },
     created_at: {
         type: Date,
         default: Date

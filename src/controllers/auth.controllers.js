@@ -1,11 +1,17 @@
 const passport = require('passport');
 
 const { createNewUser } = require('../database/queries/users');
+const { getInitialPrompt } = require('../database/queries/prompts');
 
 async function httpSignupUser(req, res, next) {
     try {
         const userData = req.body;
-        const user = await createNewUser(userData);
+
+        //get initial prompt
+        const prompt = await getInitialPrompt();
+
+        //create new user and set current prompt to initial prompt
+        await createNewUser({...userData, currentTornadoPromptId: prompt._id});
   
         res.status(201).json({success: true, message: 'user successfully created'})
     } catch(err) {
