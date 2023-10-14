@@ -20,7 +20,7 @@ const sessionConfig = require('./config/sessionConfig');
 
 const authRouter = require('./routes/auth.route');
 const { getInitialPrompt, getNextPrompt } = require('./database/queries/prompts');
-const { getCurrentPrompt } = require('./services/prompt.service');
+const { getCurrentPrompt, updateUserPromptProgress } = require('./services/prompt.service');
 
 require('dotenv').config();
 
@@ -69,6 +69,12 @@ io.on('connection', async (socket) => {
 
     socket.on('getNextPrompt', async promptText => {
         const nextPrompt = await getNextPrompt(promptText);
+
+        //update user's progress by updating prompt
+        if (socket.handshake.session) {
+            const { _id } = nextPrompt;
+            await updateUserPromptProgress(_id);
+        }
 
         socket.emit('getPrompt', nextPrompt);
     })

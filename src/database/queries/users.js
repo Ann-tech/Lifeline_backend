@@ -27,8 +27,18 @@ async function createNewUser(userData) {
     }
 }
 
+async function updateUserPrompt(id) {
+    try {
+        const user = await User.updateOne({currentTornadoPromptId: id});
+        return user;
+    } catch(err) {
+        throw err;
+    }
+}
+
 module.exports = {
     findUserByUsername,
     findUserById,
-    createNewUser
+    createNewUser,
+    updateUserPrompt
 }
