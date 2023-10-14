@@ -4,6 +4,7 @@
   "description": "An engaging educational game designed to raise awareness about best safety practices during natural disasters",
   "main": "src/app.js",
   "scripts": {
+    "start": "node src/app.js",
     "dev": "cross-env NODE_ENV=development nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
