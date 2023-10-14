@@ -62,6 +62,15 @@ async function httpSendFailureResponse(req, res, next) {
     return res.status(401).json({ success: false, message: 'Authentication failed.' });
 }
 
+async function httpLogoutUser(req, res, next) {
+    req.logout(function(err) {
+        if (err) { 
+            return next(err); 
+        }
+        res.status(200).json({ success: true, message: 'Logged out successfully' });
+    });
+}
+
 
 module.exports = {
     httpLoginUser,
@@ -69,5 +78,6 @@ module.exports = {
     httpAuthenticateWithGoogle,
     httpRedirectUser,
     httpSendSuccessResponse,
-    httpSendFailureResponse
+    httpSendFailureResponse,
+    httpLogoutUser
 }
