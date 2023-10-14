@@ -3,6 +3,8 @@ const passport = require('passport');
 const { createNewUser } = require('../database/queries/users');
 const { getInitialPrompt } = require('../database/queries/prompts');
 
+const path = require('path');
+
 async function httpSignupUser(req, res, next) {
     try {
         const userData = req.body;
@@ -14,17 +16,13 @@ async function httpSignupUser(req, res, next) {
         const user = await createNewUser({...userData, currentTornadoPromptId: prompt._id});
 
         //login user
-        req.logIn(user, err => {
-            if (err) next(err);
-            res.json({
-                success: true,
-                message: 'Login successful'
-            });
-        })
+        loginUser(req, res, user, 'Login successful');
   
         // res.status(201).json({success: true, message: 'user successfully created'})
     } catch(err) {
-        next(err);
+        // next(err);
+
+        res.render('signup', {error: err.message});
     }
 }
 
@@ -32,23 +30,35 @@ async function httpLoginUser(req, res, next) {
     passport.authenticate('login', async (err, user, info) => {
         try {
             if (err) {
-                return next(err);
+                console.log("hello")
+                // return next(err);
+                return res.render('login', {error: err.message});
             }
             if (!user) {
-                const error = new Error('email or password is incorrect');
-                return next(error);
+                const error = new Error('username or password is incorrect');
+                // return next(error);
+                return res.render('login', {error: error.message});
             }
-            req.logIn(user, err => {
-                if (err) next(err);
-                res.json({
-                    success: true,
-                    message: info.message
-                });
-            })
+            loginUser(req, res, user, info.message);
             
         } catch (error) {
             return next(error);
     }})(req, res, next);
+}
+
+async function loginUser(req, res, user, message) {
+    req.logIn(user, err => {
+        // if (err) next(err);
+        // res.json({
+        //     success: true,
+        //     message
+        // });
+        if (err) {
+            res.render('login', {error: err.message});
+        }
+
+        return res.sendFile(path.join(__dirname, '..', '/index.html'));
+    })
 }
 
 async function httpAuthenticateWithGoogle(req, res, next) {

@@ -11,7 +11,7 @@ async function findUserByUsername(username) {
 
 async function findUserById(id) {
     try {
-        const user = await User.findById(id);
+        const user = await User.findById(id).populate('currentTornadoPromptId');
         return user;
     } catch(err) {
         throw err;

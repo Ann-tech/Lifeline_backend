@@ -4,6 +4,7 @@ const app = express();
 require("dotenv").config();
 
 const CONFIG = {
+    name: "Lifeline",
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,

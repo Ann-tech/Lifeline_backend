@@ -4,29 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup</title>
+    
+    <style>
+        .error {
+            color: rgb(151, 19, 19);
+        }
+    </style>
 </head>
 <body>
-    <form action="http://localhost:8080/api/v1/auth/signup">
+    <form action="http://localhost:8080/api/v1/auth/signup" method="POST">
+        <% if (error) { %>
+            <p class="error"><%= error %></p>
+        <% } %>
         <div>
-            <label for="first_name">First Name</label>
+            <label for="first_name">First Name: </label>
             <input type="text" name="first_name" id="first_name">
-        </div>
+        </div><br>
         <div>
-            <label for="last_name">Last Name</label>
+            <label for="last_name">Last Name: </label>
             <input type="text" name="last_name" id="last_name">
-        </div>
+        </div><br>
         <div>
-            <label for="username">Username</label>
+            <label for="username">Username: </label>
             <input type="text" name="username" id="username">
-        </div>
+        </div><br>
         <div>
-            <label for="email">Email</label>
+            <label for="email">Email: </label>
             <input type="email" name="email" id="email">
-        </div>
+        </div><br>
         <div>
-            <label for="password">Password</label>
+            <label for="password">Password: </label>
             <input type="text" name="password" id="password">
-        </div>
+        </div><br>
         <input type="submit" value="submit">
     </form>
 </body>

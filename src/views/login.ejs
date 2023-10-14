@@ -4,16 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <style>
+        .error {
+            color: rgb(151, 19, 19);
+        }
+    </style>
 </head>
 <body>
-    <form action="http://localhost:8080/api/v1/auth/signup">
+    <form action="http://localhost:8080/api/v1/auth/login" method="POST">
+        <% if (error) { %>
+            <p class="error"><%= error %></p>
+        <% } %>
 
         <div>
-            <label for="username">Username</label>
+            <label for="username">Username: </label>
             <input type="text" name="username" id="username">
         </div>
         <div>
-            <label for="password">Password</label>
+            <label for="password">Password: </label>
             <input type="text" name="password" id="password">
         </div>
 

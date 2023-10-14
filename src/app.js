@@ -8,6 +8,8 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+const sharedsession = require('express-socket.io-session');
+
 const PORT = process.env.PORT || 8080;
 
 const errorHandlerMiddleware = require('./middlewares/errorHandler.middleware');
@@ -17,6 +19,7 @@ const logger = require('./logging/logger');
 const { connectToDb } = require('./database/db');
 
 const sessionConfig = require('./config/sessionConfig');
+const expressSession = session(sessionConfig);
 
 const authRouter = require('./routes/auth.route');
 const { getInitialPrompt, getNextPrompt } = require('./database/queries/prompts');
@@ -27,7 +30,7 @@ require('dotenv').config();
 // Add the morgan middleware
 app.use(morganMiddleware);
 
-app.use( session(sessionConfig) );
+app.use( expressSession );
 
 require('./authentication/auth');
 
@@ -36,7 +39,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.set('view engine', 'ejs');
-app.set('views', 'views');
+app.set('views', __dirname + '/views');
 
 if (process.env.NODE_ENV !== 'test') {
     connectToDb()
@@ -50,22 +53,40 @@ app.use(express.json());
 
 app.use('/api/v1/auth', authRouter);
 
-app.get('/', (req, res) => {
-    
+//will be removed soon
+app.get('/', (req, res) => { 
     res.sendFile(__dirname + '/index.html');
-  
 });
+
+app.get('/login', (req, res) => {
+    res.render('login', {error: null});
+});
+
+app.get('/signup', (req, res) => {
+    res.render('signup', {error: null});
+});
+
+//to this point
+
+// Use shared session middleware for socket.io
+// setting autoSave:true
+io.use(sharedsession(expressSession, {
+    autoSave:true
+})); 
 
 io.on('connection', async (socket) => {
     console.log('a user connected');
 
+    const user = socket.handshake.session.passport?.user;
+    console.log(user);
+   
     //Get current prompt
     let currentPrompt;
-    if (!socket.handshake.session) {
+    if (!user) {
         currentPrompt = await getInitialPrompt();
     } else {
-        const { _id } = req.user;
-        currentPrompt = await getCurrentPrompt(_id);
+        const id = user;
+        currentPrompt = await getCurrentPrompt(id);
     }
     
     socket.emit('getPrompt', currentPrompt);
@@ -74,7 +95,9 @@ io.on('connection', async (socket) => {
         const nextPrompt = await getNextPrompt(promptText);
 
         //update user's progress by updating prompt
-        if (socket.handshake.session) {
+        const user = socket.handshake.session.passport?.user;
+
+        if (user) {
             const { _id } = nextPrompt;
             await updateUserPromptProgress(_id);
         }
