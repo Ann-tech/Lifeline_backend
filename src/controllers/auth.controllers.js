@@ -11,9 +11,18 @@ async function httpSignupUser(req, res, next) {
         const prompt = await getInitialPrompt();
 
         //create new user and set current prompt to initial prompt
-        await createNewUser({...userData, currentTornadoPromptId: prompt._id});
+        const user = await createNewUser({...userData, currentTornadoPromptId: prompt._id});
+
+        //login user
+        req.logIn(user, err => {
+            if (err) next(err);
+            res.json({
+                success: true,
+                message: 'Login successful'
+            });
+        })
   
-        res.status(201).json({success: true, message: 'user successfully created'})
+        // res.status(201).json({success: true, message: 'user successfully created'})
     } catch(err) {
         next(err);
     }

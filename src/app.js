@@ -35,6 +35,9 @@ app.use(passport.initialize());
 
 app.use(passport.session());
 
+app.set('view engine', 'ejs');
+app.set('views', 'views');
+
 if (process.env.NODE_ENV !== 'test') {
     connectToDb()
 }
