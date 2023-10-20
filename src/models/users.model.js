@@ -36,6 +36,15 @@ const userSchema = new Schema({
         ref: 'Prompt',
         required: true
     },
+    scores: {
+        tornadoGameScore: {
+            score: {
+                type: Number,
+                required: true,
+                default: 0
+            }
+        }
+    },
     created_at: {
         type: Date,
         default: Date

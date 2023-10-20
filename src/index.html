@@ -28,9 +28,12 @@
     
 </head>
 <body>
+    <h3></h3>
     <fieldset>
         <legend></legend>
-        <div id="container"></div>
+        <div id="container">
+            
+        </div>
     </fieldset>
 
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
@@ -44,8 +47,7 @@
             // Clear the content of container before populating new contents
             container.innerHTML = ''; 
 
-            console.log(prompt);
-            ({question, options} = prompt);
+            ({question, options} = prompt.nextPrompt);
 
             document.querySelector('legend').innerText = question;
         
@@ -80,8 +82,11 @@
 
                 //append group to container
                 container.appendChild(group);
-                console.log(container);
+                
             }
+            const scoreContainer = document.querySelector('h3');
+            console.log(scoreContainer);
+            scoreContainer.innerText = prompt.score;
         });
 
         // Add a "change" event listener to the container

@@ -2,10 +2,11 @@
     {
         "title": "welcomeToTwistervillePrompt",
         "question": "Welcome to Twisterville!\n\nHi Jenny, Welcome to the neighborhood! Throughout the game, we'll present you with different tornado scenarios & you'll be given 3 options. Choose the best option on the first try for the most points. If you choose wrong, don't worry! You'll get the chance to try again, but earn less points.",
-        "initialPrompt": "true",
+        "initialPrompt": true,
         "options": [
             {
                 "text": "Start the simulation!",
+                "isRight": null,
                 "nextPrompt": "earlyWarningPrompt"
             }
         ]  
@@ -20,7 +21,7 @@
             },
             {
                 "text": "Turn on the radio or TV for weather updates.",
-                "isRight": "true",
+                "isRight": true,
                 "nextPrompt": "tornadoWatchPrompt"
             },
             {
@@ -39,7 +40,7 @@
             },
             {
                 "text": "Conditions are right for a tornado, but one hasn't been spotted yet.",
-                "isRight": "true",
+                "isRight": true,
                 "nextPrompt": "preparingHomePrompt"
             },
             {
@@ -58,7 +59,7 @@
             },
             {
                 "text": "Secure outdoor furniture and move your car inside the garage.",
-                "isRight": "true",
+                "isRight": true,
                 "nextPrompt": "takingShelterPrompt"
             },
             {
@@ -73,7 +74,7 @@
         "options": [
             {
                 "text": "In the southwest corner of your basement.",
-                "isRight": "true",
+                "isRight": true,
                 "nextPrompt": "protectingYourselfPrompt"
             },
             {
@@ -96,7 +97,7 @@
             },
             {
                 "text": "Get under something sturdy like a workbench or stairs and protect your head and neck.",
-                "isRight": "true",
+                "isRight": true,
                 "nextPrompt": "postTornadoPrompt"
             },
             {
@@ -119,7 +120,7 @@
             },
             {
                 "text": "Listen to the radio or your emergency weather app for updates before deciding.",
-                "isRight": "true",
+                "isRight": true,
                 "nextPrompt": "helpingNeighborsPrompt"
             }
         ]  
@@ -134,7 +135,7 @@
             },
             {
                 "text": "Ensure it's safe outside and take an emergency kit with you.",
-                "isRight": "true",
+                "isRight": true,
                 "nextPrompt": "congratsPrompt"
             },
             {
@@ -149,10 +150,12 @@
         "options": [
             {
                 "text": "Yes, let's go again!",
+                "isRight": null,
                 "nextPrompt": "welcomeToTwistervillePrompt"
             },
             {
                 "text": "No, I've had enough tornadoes for one day.",
+                "isRight": null,
                 "nextPrompt": "welcomeToTwistervillePrompt"
             }
         ]  
@@ -163,6 +166,7 @@
         "options": [
             {
                 "text": "End Game",
+                "isRight": null,
                 "nextPrompt": "gameOverPrompt"
             }
         ]  
@@ -173,6 +177,7 @@
         "options": [
             {
                 "text": "Yes, let's be friends with the weather.",
+                "isRight": true,
                 "nextPrompt": "earlyWarningPrompt"
             },
             {
@@ -187,6 +192,7 @@
         "options": [
             {
                 "text": "Sure, grandma won't mind.",
+                "isRight": true,
                 "nextPrompt": "preparingHomePrompt"
             },
             {
@@ -201,6 +207,7 @@
         "options": [
             {
                 "text": "Right! Let's tidy up later.",
+                "isRight": true,
                 "nextPrompt": "preparingHomePrompt"
             },
             {
@@ -215,6 +222,7 @@
         "options": [
             {
                 "text": "Yes, Toto and I are ready!",
+                "isRight": true,
                 "nextPrompt": "welcomeToTwistervillePrompt"
             },
             {

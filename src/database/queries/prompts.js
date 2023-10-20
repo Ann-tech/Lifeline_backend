@@ -35,13 +35,21 @@ async function getInitialPrompt() {
 async function findPromptBasedOnText(promptText) {
     try {
         const prompt = await Prompt.findOne({ 'options.text': promptText });
-
         const { options } = prompt;
         
 
         for (let i = 0; i < options.length; i++) {
-            const { text, nextPrompt } = options[i];
-            if (text === promptText) return nextPrompt;
+            const { text, isRight, nextPrompt } = options[i];
+
+            const promptInfo = {};
+            
+            if (text === promptText) {
+                promptInfo.isRight = isRight;
+                promptInfo.nextPrompt = nextPrompt;
+
+                return promptInfo;
+            }
+            
         }
         
     } catch(err) {
@@ -60,10 +68,11 @@ async function getPromptByTitle(title) {
 
 async function getNextPrompt(promptText) {
     try {
-        const title = await findPromptBasedOnText(promptText);
+        const prompt = await findPromptBasedOnText(promptText);
+        const title = prompt.nextPrompt;
 
         const nextPrompt = await getPromptByTitle(title);
-        return nextPrompt;
+        return { isRight: prompt.isRight, nextPrompt };
     } catch(err) {
         throw err;
     }

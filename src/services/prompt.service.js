@@ -2,17 +2,18 @@ const { findUserById, updateUserPrompt } = require("../database/queries/users")
 
 async function getCurrentPrompt(userId) {
     try {
-        const { currentTornadoPromptId } = await findUserById(userId);
-        return currentTornadoPromptId;
+        const user = await findUserById(userId);
+        return { nextPrompt: user.currentTornadoPromptId, score: user.scores.tornadoGameScore.score };
     } catch(err) {
         throw err;
     }
 }
 
-async function updateUserPromptProgress(currentPromptId) {
+async function updateUserPromptProgress(userId, currentPromptId, isRight) {
     try {
-        await updateUserPrompt(currentPromptId);
-        return;
+        const user = await updateUserPrompt(userId, currentPromptId, isRight);
+        return { score: user.scores.tornadoGameScore.score };
+    
     } catch(err) {
         throw err;
     }

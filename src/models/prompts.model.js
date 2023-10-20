@@ -20,8 +20,8 @@ const promptSchema = new Schema({
             text: String,
             isRight: {
                 type: Boolean,
-                required: true,
-                default: false
+                default: false,
+                allowNull: true
             },
             nextPrompt: {
                 type: String,

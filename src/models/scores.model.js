@@ -3,7 +3,7 @@ const { Schema } = require('mongoose');
 
 const scoreSchema = new Schema({
     score: {
-        type: number,
+        type: Number,
         required: [true, "score is required"]
     },
     userId: {

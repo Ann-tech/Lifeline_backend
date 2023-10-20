@@ -92,17 +92,20 @@ io.on('connection', async (socket) => {
     socket.emit('getPrompt', currentPrompt);
 
     socket.on('getNextPrompt', async promptText => {
-        const nextPrompt = await getNextPrompt(promptText);
+        const prompt = await getNextPrompt(promptText);
 
         //update user's progress by updating prompt
-        const user = socket.handshake.session.passport?.user;
+        let user = socket.handshake.session.passport?.user;
 
         if (user) {
-            const { _id } = nextPrompt;
-            await updateUserPromptProgress(_id);
+            
+            const { nextPrompt, isRight } = prompt;
+            const updatedUser = await updateUserPromptProgress(user, nextPrompt._id, isRight);
+        
+            prompt.score = updatedUser.score;
         }
-
-        socket.emit('getPrompt', nextPrompt);
+        
+        socket.emit('getPrompt', prompt);
     })
     
   });
