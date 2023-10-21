@@ -60,17 +60,17 @@ app.use('/api/v1/leaderboard', leaderboardRouter);
 
 //will be removed soon
 app.get('/', (req, res) => { 
-    // res.status(200).json({message: "Welcome to Lifeline"})
-    res.sendFile(__dirname + '/index.html');
+    res.status(200).json({message: "Welcome to Lifeline"})
+    // res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/login', (req, res) => {
-    res.render('login', {error: null});
-});
+// app.get('/login', (req, res) => {
+//     res.render('login', {error: null});
+// });
 
-app.get('/signup', (req, res) => {
-    res.render('signup', {error: null});
-});
+// app.get('/signup', (req, res) => {
+//     res.render('signup', {error: null});
+// });
 
 
 // Use shared session middleware for socket.io

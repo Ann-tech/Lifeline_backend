@@ -20,9 +20,9 @@ async function httpSignupUser(req, res, next) {
   
         // res.status(201).json({success: true, message: 'user successfully created'})
     } catch(err) {
-        // next(err);
+        next(err);
 
-        res.render('signup', {error: err.message});
+        // res.render('signup', {error: err.message});
     }
 }
 
@@ -30,13 +30,13 @@ async function httpLoginUser(req, res, next) {
     passport.authenticate('login', async (err, user, info) => {
         try {
             if (err) {
-                // return next(err);
-                return res.render('login', {error: err.message});
+                return next(err);
+                // return res.render('login', {error: err.message});
             }
             if (!user) {
                 const error = new Error(info.message);
-                // return next(error);
-                return res.render('login', {error: error.message});
+                return next(error);
+                // return res.render('login', {error: error.message});
             }
             loginUser(req, res, 200, user, info.message);
             
@@ -47,16 +47,16 @@ async function httpLoginUser(req, res, next) {
 
 async function loginUser(req, res, status, user, message) {
     req.logIn(user, err => {
-        // if (err) return next(err);
-        // res.status(status).json({
-        //     success: true,
-        //     message
-        // });
-        if (err) {
-            res.render('login', {error: err.message});
-        }
+        if (err) return next(err);
+        res.status(status).json({
+            success: true,
+            message
+        });
+        // if (err) {
+        //     res.render('login', {error: err.message});
+        // }
 
-        return res.sendFile(path.join(__dirname, '..', '/index.html'));
+        // return res.sendFile(path.join(__dirname, '..', '/index.html'));
     })
 }
 
