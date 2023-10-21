@@ -1,7 +1,6 @@
 const SCORE = 500;
 
 function calculateCurrentScore(currentScore, isRight) {
-    console.log(currentScore, isRight);
     if (isRight) {
         currentScore = currentScore + SCORE;
     } else if (isRight === null) {
@@ -11,6 +10,7 @@ function calculateCurrentScore(currentScore, isRight) {
             currentScore = currentScore - SCORE / 2;
         }
     }
+    return currentScore;
 }
 
 module.exports = {

@@ -44,7 +44,6 @@
 
         //get and display prompts
         socket.on('getPrompt', prompt => {
-            console.log(prompt);
             // Clear the content of container before populating new contents
             container.innerHTML = ''; 
             ({question, options} = prompt.nextPrompt);
@@ -94,7 +93,7 @@
 
             if (selectedRadio.type === 'radio') {
                 const promptText = selectedRadio.value;
-                const score = document.querySelector('h3').innerText;
+                const score = +document.querySelector('h3').innerText;
 
                 const promptInfo = {promptText, score};
                 socket.emit('getNextPrompt', promptInfo);

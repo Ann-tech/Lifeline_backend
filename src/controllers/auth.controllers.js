@@ -34,7 +34,7 @@ async function httpLoginUser(req, res, next) {
                 return res.render('login', {error: err.message});
             }
             if (!user) {
-                const error = new Error('username or password is incorrect');
+                const error = new Error(info.message);
                 // return next(error);
                 return res.render('login', {error: error.message});
             }
