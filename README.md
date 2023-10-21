@@ -139,7 +139,7 @@ npm run dev
 [
     {
         "scores": {
-            "tornadoGameScore": {
+            "tornadoGame": {
                 "score": 2000
             }
         },
@@ -147,7 +147,7 @@ npm run dev
     },
     {
         "scores": {
-            "tornadoGameScore": {
+            "tornadoGame": {
                 "score": 1500
             }
         },
