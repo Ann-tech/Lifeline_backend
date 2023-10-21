@@ -1,4 +1,5 @@
 const User = require('../../models/users.model');
+const { calculateCurrentScore } = require('../../utils');
 
 const SCORE = 500;
 
@@ -37,18 +38,18 @@ async function updateUserPrompt(userId, currentPromptId, isRight) {
         user = await user.populate('currentTornadoPromptId');
 
         if (user.currentTornadoPromptId.initialPrompt) {
-            user.scores.tornadoGameScore.score = 0;
+            user.scores.tornadoGame.score = 0;
         }
 
-        const currentScore = user.scores.tornadoGameScore.score;
+        const currentScore = user.scores.tornadoGame.score;
         
         if (isRight) {
-            user.scores.tornadoGameScore.score = currentScore + SCORE;
+            user.scores.tornadoGame.score = calculateCurrentScore(currentScore, isRight);
         } else if (isRight === null) {
-            user.scores.tornadoGameScore.score = user.scores.tornadoGameScore.score;
+            user.scores.tornadoGame.score = calculateCurrentScore(currentScore, isRight);
         } else {
             if (currentScore - SCORE / 2 >= 0) {
-                user.scores.tornadoGameScore.score = currentScore - SCORE / 2;
+                user.scores.tornadoGame.score = calculateCurrentScore(currentScore, isRight);
             }
         }
 
@@ -61,8 +62,8 @@ async function updateUserPrompt(userId, currentPromptId, isRight) {
 }
 
 async function getAllUsersBasedOnScore() {
-    const users = await User.find({}, {username: 1, 'scores.tornadoGameScore.score': 1, _id: 0})
-                      .sort({ 'scores.tornadoGameScore.score': -1 });
+    const users = await User.find({}, {username: 1, 'scores.tornadoGame.score': 1, _id: 0})
+                      .sort({ 'scores.tornadoGame.score': -1 });
     return users;
 }
 

@@ -46,7 +46,6 @@
         socket.on('getPrompt', prompt => {
             // Clear the content of container before populating new contents
             container.innerHTML = ''; 
-
             ({question, options} = prompt.nextPrompt);
 
             document.querySelector('legend').innerText = question;
@@ -85,7 +84,6 @@
                 
             }
             const scoreContainer = document.querySelector('h3');
-            console.log(scoreContainer);
             scoreContainer.innerText = prompt.score;
         });
 
@@ -94,8 +92,11 @@
             const selectedRadio = event.target;
 
             if (selectedRadio.type === 'radio') {
-                const value = selectedRadio.value;
-                socket.emit('getNextPrompt', value);
+                const promptText = selectedRadio.value;
+                const score = document.querySelector('h3').innerText;
+
+                const promptInfo = {promptText, score};
+                socket.emit('getNextPrompt', promptInfo);
             }
         });
        

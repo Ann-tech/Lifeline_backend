@@ -26,6 +26,7 @@ const leaderboardRouter = require('./routes/leaderboardRouter');
 
 const { getInitialPrompt, getNextPrompt } = require('./database/queries/prompts');
 const { getCurrentPrompt, updateUserPromptProgress } = require('./services/prompt.service');
+const { calculateCurrentScore } = require('./utils');
 
 require('dotenv').config();
 
@@ -59,6 +60,7 @@ app.use('/api/v1/leaderboard', leaderboardRouter);
 
 //will be removed soon
 app.get('/', (req, res) => { 
+    // res.status(200).json({message: "Welcome to Lifeline"})
     res.sendFile(__dirname + '/index.html');
 });
 
@@ -70,7 +72,6 @@ app.get('/signup', (req, res) => {
     res.render('signup', {error: null});
 });
 
-//to this point
 
 // Use shared session middleware for socket.io
 // setting autoSave:true
@@ -82,21 +83,26 @@ io.on('connection', async (socket) => {
     console.log('a user connected');
 
     const user = socket.handshake.session.passport?.user;
-    console.log(user);
    
     //Get current prompt
     let currentPrompt;
+    let prompt = {};
+
     if (!user) {
         currentPrompt = await getInitialPrompt();
+        prompt.nextPrompt = currentPrompt;
+        prompt.score = 0;
     } else {
         const id = user;
         currentPrompt = await getCurrentPrompt(id);
+        prompt = currentPrompt;
     }
-    
-    socket.emit('getPrompt', currentPrompt);
 
-    socket.on('getNextPrompt', async promptText => {
-        const prompt = await getNextPrompt(promptText);
+    
+    socket.emit('getPrompt', prompt);
+
+    socket.on('getNextPrompt', async promptInfo => {
+        const prompt = await getNextPrompt(promptInfo.promptText);
 
         //update user's progress by updating prompt
         let user = socket.handshake.session.passport?.user;
@@ -107,6 +113,9 @@ io.on('connection', async (socket) => {
             const updatedUser = await updateUserPromptProgress(user, nextPrompt._id, isRight);
         
             prompt.score = updatedUser.score;
+        } else {
+            const score = calculateCurrentScore(promptInfo.score, prompt.isRight);
+            prompt.score = score;
         }
         
         socket.emit('getPrompt', prompt);

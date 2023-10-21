@@ -16,7 +16,7 @@ async function httpSignupUser(req, res, next) {
         const user = await createNewUser({...userData, currentTornadoPromptId: prompt._id});
 
         //login user
-        loginUser(req, res, user, 'Login successful');
+        loginUser(req, res, 201, user, 'user successfully created');
   
         // res.status(201).json({success: true, message: 'user successfully created'})
     } catch(err) {
@@ -30,7 +30,6 @@ async function httpLoginUser(req, res, next) {
     passport.authenticate('login', async (err, user, info) => {
         try {
             if (err) {
-                console.log("hello")
                 // return next(err);
                 return res.render('login', {error: err.message});
             }
@@ -39,17 +38,17 @@ async function httpLoginUser(req, res, next) {
                 // return next(error);
                 return res.render('login', {error: error.message});
             }
-            loginUser(req, res, user, info.message);
+            loginUser(req, res, 200, user, info.message);
             
         } catch (error) {
             return next(error);
     }})(req, res, next);
 }
 
-async function loginUser(req, res, user, message) {
+async function loginUser(req, res, status, user, message) {
     req.logIn(user, err => {
-        // if (err) next(err);
-        // res.json({
+        // if (err) return next(err);
+        // res.status(status).json({
         //     success: true,
         //     message
         // });

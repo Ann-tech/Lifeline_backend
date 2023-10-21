@@ -37,9 +37,10 @@ const userSchema = new Schema({
         required: true
     },
     scores: {
-        tornadoGameScore: {
+        tornadoGame: {
             score: {
                 type: Number,
+                min: 0,
                 required: true,
                 default: 0
             }
