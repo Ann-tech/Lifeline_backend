@@ -126,7 +126,7 @@ npm run dev
 
 ---
 
-### Leaderboar
+### Leaderboard
 
 - Route: /leaderboard
 - Method: GET
