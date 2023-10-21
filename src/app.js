@@ -22,6 +22,8 @@ const sessionConfig = require('./config/sessionConfig');
 const expressSession = session(sessionConfig);
 
 const authRouter = require('./routes/auth.route');
+const leaderboardRouter = require('./routes/leaderboardRouter');
+
 const { getInitialPrompt, getNextPrompt } = require('./database/queries/prompts');
 const { getCurrentPrompt, updateUserPromptProgress } = require('./services/prompt.service');
 
@@ -52,6 +54,8 @@ app.use(express.urlencoded( {extended: false} ));
 app.use(express.json());
 
 app.use('/api/v1/auth', authRouter);
+
+app.use('/api/v1/leaderboard', leaderboardRouter);
 
 //will be removed soon
 app.get('/', (req, res) => { 

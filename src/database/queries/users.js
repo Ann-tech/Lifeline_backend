@@ -60,13 +60,17 @@ async function updateUserPrompt(userId, currentPromptId, isRight) {
     }
 }
 
-async function updateUserScore(score) {
-
+async function getAllUsersBasedOnScore() {
+    const users = await User.find({}, {username: 1, 'scores.tornadoGameScore.score': 1, _id: 0})
+                      .sort({ 'scores.tornadoGameScore.score': -1 });
+    return users;
 }
+
 
 module.exports = {
     findUserByUsername,
     findUserById,
     createNewUser,
-    updateUserPrompt
+    updateUserPrompt,
+    getAllUsersBasedOnScore
 }
