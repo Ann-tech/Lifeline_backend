@@ -63,7 +63,7 @@ npm run dev
 
 ### Base URL
 
-- https://lifeline-1zrj.onrender.com/api/v1
+- https://lifeline-1zrj.onrender.com
 
 ### user signup
 
