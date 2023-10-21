@@ -44,6 +44,7 @@
 
         //get and display prompts
         socket.on('getPrompt', prompt => {
+            console.log(prompt);
             // Clear the content of container before populating new contents
             container.innerHTML = ''; 
             ({question, options} = prompt.nextPrompt);
