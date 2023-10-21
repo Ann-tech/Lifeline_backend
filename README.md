@@ -63,12 +63,14 @@ npm run dev
 
 ### Base URL
 
-- https://localhost:8080/api/v1
+- https://lifeline-1zrj.onrender.com/api/v1
 
 ### user signup
 
 - Route: /auth/signup
 - Method: POST
+
+- url: https://lifeline-1zrj.onrender.com/api/v1/auth/signup
 
 :point_down: Body
 
@@ -100,6 +102,8 @@ npm run dev
 - Route: /auth/login
 - Method: POST
 
+- url: https://lifeline-1zrj.onrender.com/api/v1/auth/login
+
 :point_down: Body
 
 ```json
@@ -116,6 +120,40 @@ npm run dev
   "success": true,
   "message": "login successful"
 }
+```
+
+<p align="right"><a href="#readme-top">back to top</a></p>
+
+---
+
+### Leaderboar
+
+- Route: /leaderboard
+- Method: GET
+
+- url: https://lifeline-1zrj.onrender.com/api/v1/leaderboard
+
+:point_down: Response
+
+```json
+[
+    {
+        "scores": {
+            "tornadoGameScore": {
+                "score": 2000
+            }
+        },
+        "username": "scar"
+    },
+    {
+        "scores": {
+            "tornadoGameScore": {
+                "score": 1500
+            }
+        },
+        "username": "ben"
+    }
+]
 ```
 
 <p align="right"><a href="#readme-top">back to top</a></p>
