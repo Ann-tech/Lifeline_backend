@@ -21,6 +21,7 @@ async function httpSignupUser(req, res, next) {
   
         res.status(201).json({success: true, message: 'user successfully created'})
     } catch(err) {
+        console.log(err);
         next(err);
 
         // res.render('signup', {error: err.message});

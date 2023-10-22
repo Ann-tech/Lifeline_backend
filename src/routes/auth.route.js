@@ -1,6 +1,8 @@
 const express = require('express');
 const authRouter = express.Router();
 
+const userValidator = require('../validators/user.validator');
+
 const { 
     httpSignupUser, 
     httpLoginUser, 
@@ -8,10 +10,11 @@ const {
     httpRedirectUser, 
     httpSendSuccessResponse, 
     httpSendFailureResponse,
-    httpLogoutUser } = require('../controllers/auth.controllers');
+    httpLogoutUser 
+} = require('../controllers/auth.controllers');
 
 
-authRouter.post('/signup', httpSignupUser);
+authRouter.post('/signup', userValidator, httpSignupUser);
 authRouter.post('/login', httpLoginUser);
 authRouter.get('/google', httpAuthenticateWithGoogle);
 authRouter.get( '/google/callback', httpRedirectUser);

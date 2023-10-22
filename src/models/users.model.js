@@ -29,7 +29,9 @@ const userSchema = new Schema({
     }, 
     google_id: {
         type: String,
+        required: false,
         unique: true,
+        sparse: true,
     },
     password: {
         type: String,
