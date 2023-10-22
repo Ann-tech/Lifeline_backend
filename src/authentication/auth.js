@@ -38,11 +38,11 @@ passport.use(
         async function(username, password, done) {
             try {
                 const user = await findUserByUsername(username);
-                if (!user) return done(null, false, {message: "user does not exist"});
+                if (!user) return done(null, false, {message: "incorrect username or password"});
 
                 const validate = await user.isValidPassword(password)
                 
-                if (!validate) return done(null, false, {message: "Password incorrect"})
+                if (!validate) return done(null, false, {message: "incorrect password"})
 
                 return done(null, user, {message: "Login successful"})
             } catch(err) {

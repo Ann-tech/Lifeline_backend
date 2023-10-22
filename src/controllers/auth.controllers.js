@@ -1,4 +1,5 @@
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
 
 const { createNewUser } = require('../database/queries/users');
 const { getInitialPrompt } = require('../database/queries/prompts');
@@ -36,15 +37,15 @@ async function httpLoginUser(req, res, next) {
 
             if (!user) {
                 const err = new Error(info.message);
-                err.status = 403;
-                return next(err);
+                err.status = 401;
+                return res.status(err.status).json({ success: false, message: err.message });
                 // return res.render('login', {error: error.message});
             }
             req.login(user, {session: false}, async(err) => {
                 if (err) return next(err)
 
                 const body = {_id: user._id, username: user.username}
-                const token = jwt.sign({ user: body }, process.env.JWT_SECRET, {expiresIn: "1h"})
+                const token = jwt.sign({ user: body }, process.env.JWT_SECRET, {expiresIn: "7d"})
 
                 return res.status(200).json({
                     message: info.message,
