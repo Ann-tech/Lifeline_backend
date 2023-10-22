@@ -5,6 +5,7 @@ const { createNewUser } = require('../database/queries/users');
 const { getInitialPrompt } = require('../database/queries/prompts');
 
 const path = require('path');
+const logger = require('../logging/logger');
 
 async function httpSignupUser(req, res, next) {
     try {
@@ -21,7 +22,7 @@ async function httpSignupUser(req, res, next) {
   
         res.status(201).json({success: true, message: 'user successfully created'})
     } catch(err) {
-        console.log(err);
+        logger.error(err);
         next(err);
 
         // res.render('signup', {error: err.message});
