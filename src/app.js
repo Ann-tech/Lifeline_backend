@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const session = require('express-session');
 const passport = require('passport');
 
 const http = require('http');
@@ -8,7 +7,6 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-const sharedsession = require('express-socket.io-session');
 
 const PORT = process.env.PORT || 8080;
 
@@ -18,8 +16,6 @@ const morganMiddleware = require('./middlewares/morgan.middleware');
 const logger = require('./logging/logger');
 const { connectToDb } = require('./database/db');
 
-const sessionConfig = require('./config/sessionConfig');
-const expressSession = session(sessionConfig);
 
 const authRouter = require('./routes/auth.route');
 const leaderboardRouter = require('./routes/leaderboardRouter');
@@ -33,13 +29,7 @@ require('dotenv').config();
 // Add the morgan middleware
 app.use(morganMiddleware);
 
-app.use( expressSession );
-
 require('./authentication/auth');
-
-app.use(passport.initialize());
-
-app.use(passport.session());
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -73,11 +63,6 @@ app.get('/', (req, res) => {
 // });
 
 
-// Use shared session middleware for socket.io
-// setting autoSave:true
-io.use(sharedsession(expressSession, {
-    autoSave:true
-})); 
 
 io.on('connection', async (socket) => {
     console.log('a user connected');

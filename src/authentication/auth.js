@@ -1,11 +1,31 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
+const JWTStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 
 const { findUserByUsername, findUserById } = require('../database/queries/users');
 
 require('dotenv').config();
+
+passport.use(
+    'jwt',
+    new JWTStrategy(
+        {
+            secretOrKey: process.env.JWT_SECRET,
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
+        },
+
+        async(token, done) => {
+            try {
+                return done(null, token.user)
+            } catch(err) {
+                done(err)
+            }
+        }
+    )
+)
 
 passport.use(
     'login',
