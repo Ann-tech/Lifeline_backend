@@ -45,9 +45,10 @@ async function httpLoginUser(req, res, next) {
                 if (err) return next(err)
 
                 const body = {_id: user._id, username: user.username}
-                const token = jwt.sign({ user: body }, process.env.JWT_SECRET, {expiresIn: "1m"})
+                const token = jwt.sign({ user: body }, process.env.JWT_SECRET, {expiresIn: "7d"})
 
                 return res.status(200).json({
+                    success: true,
                     message: info.message,
                     token,
                     username: user.username

@@ -118,7 +118,9 @@ npm run dev
 ```json
 {
   "success": true,
-  "message": "login successful"
+  "message": "Login successful",
+  "token": "token",
+  "username": "doe"
 }
 ```
 

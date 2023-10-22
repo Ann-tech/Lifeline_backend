@@ -4,6 +4,8 @@ const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 const JWTStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 
+const User = require('../models/users.model');
+
 
 const { findUserByUsername, findUserById } = require('../database/queries/users');
 
@@ -61,23 +63,20 @@ passport.use(
             callbackURL: "http://localhost:8080/api/v1/auth/google/callback",
             passReqToCallback   : true
         },
-        function(request, accessToken, refreshToken, profile, done) {
-            console.log(profile);
-            User.findOrCreate({ googleId: profile.id }, function (err, user) {
-                return done(err, user);
-            });
+        async function(request, accessToken, refreshToken, profile, done) {
+            return done(null, profile.email);
+            // try {
+            //     let user = await User.findOne({ googleId: profile.id });
+
+            //     if (!user) {
+            //         user = await User.create({ googleId: profile.id, email: profile.email })
+            //     }
+
+            //     return done(null, profile.email);
+            // } catch(err) {
+            //     done(err);
+            // }
         }
     )
 );
 
-passport.serializeUser((user, done) => {
-    done(null, user._id);
-});
-
-passport.deserializeUser(async (id, done) => {
-    const user = await findUserById(id);
-    if (!user) {
-        done(error, false);
-    }
-    done(null, user);
-});

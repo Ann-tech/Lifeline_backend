@@ -46,11 +46,12 @@ app.use(express.json());
 
 app.use('/api/v1/auth', authRouter);
 
-app.use('/api/v1/leaderboard', passport.authenticate('jwt', {session: false}), leaderboardRouter);
+app.use('/api/v1/leaderboard', leaderboardRouter);
 
 //will be removed soon
-app.get('/', (req, res) => { 
-    res.status(200).json({message: "Welcome to Lifeline"})
+app.get('/', passport.authenticate('jwt', {session: false}), (req, res) => { 
+    console.log(req.user);
+    return res.status(200).json({message: "Welcome to Lifeline"})
     // res.sendFile(__dirname + '/index.html');
 });
 
@@ -67,7 +68,7 @@ app.get('/', (req, res) => {
 io.on('connection', async (socket) => {
     console.log('a user connected');
 
-    const user = socket.handshake.session.passport?.user;
+    const user = socket.request.user?.id;
    
     //Get current prompt
     let currentPrompt;
@@ -90,7 +91,7 @@ io.on('connection', async (socket) => {
         const prompt = await getNextPrompt(promptInfo.promptText);
 
         //update user's progress by updating prompt
-        let user = socket.handshake.session.passport?.user;
+        let user = socket.request.user?.id;
 
         if (user) {
             

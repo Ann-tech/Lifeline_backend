@@ -27,6 +27,10 @@ const userSchema = new Schema({
         unique: [true, 'email already exists'],
         validate: [validator.isEmail, 'enter a valid email address']
     }, 
+    google_id: {
+        type: String,
+        unique: true,
+    },
     password: {
         type: String,
         required: true
