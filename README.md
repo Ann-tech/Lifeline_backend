@@ -132,6 +132,8 @@ npm run dev
 
 - Route: /leaderboard
 - Method: GET
+- Header
+  - Authorization: Bearer {token}
 
 - url: https://lifeline-1zrj.onrender.com/api/v1/leaderboard
 
