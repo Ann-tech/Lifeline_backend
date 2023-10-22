@@ -16,9 +16,9 @@ async function httpSignupUser(req, res, next) {
         const user = await createNewUser({...userData, currentTornadoPromptId: prompt._id});
 
         //login user
-        loginUser(req, res, 201, user, 'user successfully created');
+        // loginUser(req, res, 201, user, 'user successfully created');
   
-        // res.status(201).json({success: true, message: 'user successfully created'})
+        res.status(201).json({success: true, message: 'user successfully created'})
     } catch(err) {
         next(err);
 
@@ -33,31 +33,35 @@ async function httpLoginUser(req, res, next) {
                 return next(err);
                 // return res.render('login', {error: err.message});
             }
+
             if (!user) {
-                const error = new Error(info.message);
-                return next(error);
+                const err = new Error(info.message);
+                err.status = 403;
+                return next(err);
                 // return res.render('login', {error: error.message});
             }
-            loginUser(req, res, 200, user, info.message);
-            
-        } catch (error) {
-            return next(error);
-    }})(req, res, next);
-}
+            req.login(user, {session: false}, async(err) => {
+                if (err) return next(err)
 
-async function loginUser(req, res, status, user, message) {
-    req.logIn(user, err => {
-        if (err) return next(err);
-        res.status(status).json({
-            success: true,
-            message
-        });
-        // if (err) {
-        //     res.render('login', {error: err.message});
-        // }
+                const body = {_id: user._id, username: user.username}
+                const token = jwt.sign({ user: body }, process.env.JWT_SECRET, {expiresIn: "1h"})
 
-        // return res.sendFile(path.join(__dirname, '..', '/index.html'));
-    })
+                return res.status(200).json({
+                    message: info.message,
+                    token,
+                    username: user.username
+                })
+
+                // if (err) {
+                //     res.render('login', {error: err.message});
+                // }
+        
+                // return res.sendFile(path.join(__dirname, '..', '/index.html'));
+            })
+        } catch(err) {
+            next(err)
+        }
+    })(req, res, next);  
 }
 
 async function httpAuthenticateWithGoogle(req, res, next) {
