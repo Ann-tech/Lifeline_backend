@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const passport = require('passport');
+const cors = require('cors');
 
 const http = require('http');
 const server = http.createServer(app);
@@ -25,6 +26,8 @@ const { getCurrentPrompt, updateUserPromptProgress } = require('./services/promp
 const { calculateCurrentScore } = require('./utils');
 
 require('dotenv').config();
+
+app.use( cors() );
 
 // Add the morgan middleware
 app.use(morganMiddleware);
