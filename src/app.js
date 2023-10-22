@@ -49,8 +49,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/leaderboard', leaderboardRouter);
 
 //will be removed soon
-app.get('/', passport.authenticate('jwt', {session: false}), (req, res) => { 
-    console.log(req.user);
+app.get('/', (req, res) => { 
     return res.status(200).json({message: "Welcome to Lifeline"})
     // res.sendFile(__dirname + '/index.html');
 });
