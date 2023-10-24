@@ -12,6 +12,17 @@ const userValidationMiddleware = async function(req, res, next) {
     }
 }
 
+const updateUserValidationMiddleware = async function(req, res, next) {
+    try {
+        const userPayload = req.body;
+        await updateUserValidator.validateAsync(userPayload);
+        next()
+    } catch(err) {
+        logger.error(err);
+        return res.status(400).json({success: false, message: err.details[0].message})
+    }
+}
+
 //Define validation schema
 const userValidator = joi.object({
     first_name: joi.string()
@@ -36,4 +47,7 @@ const updateUserValidator = joi.object({
                  .optional()
 });
 
-module.exports = userValidationMiddleware
+module.exports = {
+    userValidationMiddleware,
+    updateUserValidationMiddleware
+}

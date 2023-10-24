@@ -49,7 +49,7 @@ async function findUserByEmail(email) {
 
 async function updateUserInfo(userId, userData) {
     try {
-        const user = await User.findByIdAndUpdate(userId, userData);
+        const user = await User.findByIdAndUpdate(userId, userData, {new: true});
         return user;
     } catch(err) {
         throw err;
