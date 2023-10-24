@@ -7,7 +7,7 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 const User = require('../models/users.model');
 
 
-const { findUserByUsername, findUserById } = require('../database/queries/users');
+const { findUserByUsername, findUserById, findUserByEmail, createNewUser } = require('../database/queries/users');
 
 require('dotenv').config();
 
@@ -64,18 +64,19 @@ passport.use(
             passReqToCallback   : true
         },
         async function(request, accessToken, refreshToken, profile, done) {
-            return done(null, profile.email);
-            // try {
-            //     let user = await User.findOne({ googleId: profile.id });
+            try {
+                const userData = {googleId: profile.id, email: profile.email};
+                
+                let user = await findUserByEmail(userData.email);
 
-            //     if (!user) {
-            //         user = await User.create({ googleId: profile.id, email: profile.email })
-            //     }
+                if (!user) {
+                    user = await createNewUser(userData); 
+                }
 
-            //     return done(null, profile.email);
-            // } catch(err) {
-            //     done(err);
-            // }
+                return done(null, user, {message: "Authentication successful"});
+            } catch(err) {
+                done(err);
+            }
         }
     )
 );

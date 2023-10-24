@@ -1,4 +1,6 @@
 const User = require('../../models/users.model');
+
+const { getInitialPrompt } = require('./prompts');
 const { calculateCurrentScore } = require('../../utils');
 
 const SCORE = 500;
@@ -23,7 +25,21 @@ async function findUserById(id) {
 
 async function createNewUser(userData) {
     try {
+        //get initial prompt
+        const prompt = await getInitialPrompt();
+        userData.currentTornadoPromptId = prompt._id;
+
         const user = await User.create(userData);
+
+        return user;
+    } catch(err) {
+        throw err;
+    }
+}
+
+async function findUserByEmail(email) {
+    try {
+        const user = await User.findOne({email});
         return user;
     } catch(err) {
         throw err;
@@ -72,6 +88,7 @@ module.exports = {
     findUserByUsername,
     findUserById,
     createNewUser,
+    findUserByEmail,
     updateUserPrompt,
     getAllUsersBasedOnScore
 }

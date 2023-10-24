@@ -124,6 +124,25 @@ npm run dev
 }
 ```
 
+### Signup / signin with google
+
+- Route: /auth/google
+- Method: POST
+
+- url: https://lifeline-1zrj.onrender.com/api/v1/auth/google
+
+:point_down: Response
+
+- username will only be included in the response if it exists
+
+```json
+{
+  "success": true,
+  "message": "Authentication successful",
+  "token": "token"
+}
+```
+
 <p align="right"><a href="#readme-top">back to top</a></p>
 
 ---

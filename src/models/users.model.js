@@ -5,18 +5,16 @@ const validator = require('validator');
 
 const userSchema = new Schema({
     first_name: {
-        type: String,
-        required: [true, "first_name field is required"]
+        type: String
     },
     last_name: {
-        type: String,
-        required: [true, "last_name field is required"]
+        type: String
     },
     username: {
         type: String,
-        required: [true, "username field is required"],
         trim: true,
         lowercase: true,
+        sparse: true,
         unique: [true, 'username already exists']
     },
     email: {
@@ -27,15 +25,14 @@ const userSchema = new Schema({
         unique: [true, 'email already exists'],
         validate: [validator.isEmail, 'enter a valid email address']
     }, 
-    google_id: {
+    googleId: {
         type: String,
         required: false,
         unique: true,
         sparse: true,
     },
     password: {
-        type: String,
-        required: true
+        type: String
     },
     currentTornadoPromptId: {
         type: mongoose.Schema.Types.ObjectId,

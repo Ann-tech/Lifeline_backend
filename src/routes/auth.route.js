@@ -7,9 +7,7 @@ const {
     httpSignupUser, 
     httpLoginUser, 
     httpAuthenticateWithGoogle, 
-    httpRedirectUser, 
-    httpSendSuccessResponse, 
-    httpSendFailureResponse,
+    httpSendResponse, 
     httpLogoutUser 
 } = require('../controllers/auth.controllers');
 
@@ -17,9 +15,8 @@ const {
 authRouter.post('/signup', userValidator, httpSignupUser);
 authRouter.post('/login', httpLoginUser);
 authRouter.get('/google', httpAuthenticateWithGoogle);
-authRouter.get( '/google/callback', httpRedirectUser);
-authRouter.get( 'google/success', httpSendSuccessResponse);
-authRouter.get( 'google/failure', httpSendFailureResponse);
+authRouter.get( '/google/callback', httpSendResponse);
+
 authRouter.post('/logout', httpLogoutUser);
 
 module.exports = authRouter;
