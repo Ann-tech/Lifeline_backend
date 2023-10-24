@@ -25,6 +25,15 @@ const userValidator = joi.object({
                 .required(),
     password: joi.string()
                     .required()
-})
+});
+
+const updateUserValidator = joi.object({
+    first_name: joi.string()
+                    .optional(),
+    last_name: joi.string()
+                    .optional(),
+    username: joi.string()
+                 .optional()
+});
 
 module.exports = userValidationMiddleware

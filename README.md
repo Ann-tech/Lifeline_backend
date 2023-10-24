@@ -147,6 +147,64 @@ npm run dev
 
 ---
 
+### Get user profile
+
+- Route: /profile
+- Method: GET
+- Header
+  - Authorization: Bearer {token}
+
+- url: https://lifeline-1zrj.onrender.com/api/v1/profile
+
+:point_down: Response
+
+```json
+{
+  "success": true,
+  "user": {
+    "first_name": "doe",
+    "last_name": "doe",
+    "username": "doe",
+    "email": "doe@gmail.com"
+  }
+}
+```
+
+### Update user profile
+
+- Route: /profile
+- Method: PUT
+- Header
+  - Authorization: Bearer {token}
+
+- url: https://lifeline-1zrj.onrender.com/api/v1/profile
+
+:point_down: Body
+
+- users can update their choose to update their first name, last name or username
+
+```json
+{
+    "first_name": "doe1",
+    "last_name": "doe1",
+    "username": "doe1"
+}
+```
+
+:point_down: Response
+
+```json
+{
+  "success": true,
+  "message": "profile successfully updated",
+  "user": {
+    "first_name": "doe1",
+    "last_name": "doe1",
+    "username": "doe1"
+  }
+}
+```
+
 ### Leaderboard
 
 - Route: /leaderboard

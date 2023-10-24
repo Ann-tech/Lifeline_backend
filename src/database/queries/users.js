@@ -46,6 +46,16 @@ async function findUserByEmail(email) {
     }
 }
 
+
+async function updateUserInfo(userId, userData) {
+    try {
+        const user = await User.findByIdAndUpdate(userId, userData);
+        return user;
+    } catch(err) {
+        throw err;
+    }
+}
+
 async function updateUserPrompt(userId, currentPromptId, isRight) {
     try {
         let user = await User.findById(userId);
@@ -78,10 +88,16 @@ async function updateUserPrompt(userId, currentPromptId, isRight) {
 }
 
 async function getAllUsersBasedOnScore() {
-    const users = await User.find({}, {username: 1, 'scores.tornadoGame.score': 1, _id: 0})
+    try {
+        const users = await User.find({}, {username: 1, 'scores.tornadoGame.score': 1, _id: 0})
                       .sort({ 'scores.tornadoGame.score': -1 });
-    return users;
+        return users;
+    } catch(err) {
+        throw err;
+    }
 }
+
+
 
 
 module.exports = {
@@ -89,6 +105,7 @@ module.exports = {
     findUserById,
     createNewUser,
     findUserByEmail,
+    updateUserInfo,
     updateUserPrompt,
     getAllUsersBasedOnScore
 }

@@ -19,6 +19,7 @@ const { connectToDb } = require('./database/db');
 
 
 const authRouter = require('./routes/auth.route');
+const profileRouter = require('./routes/profile.route');
 const leaderboardRouter = require('./routes/leaderboardRouter');
 
 const { getInitialPrompt, getNextPrompt } = require('./database/queries/prompts');
@@ -48,6 +49,8 @@ app.use(express.urlencoded( {extended: false} ));
 app.use(express.json());
 
 app.use('/api/v1/auth', authRouter);
+
+app.use('/api/v1/profile', passport.authenticate('jwt', {session: false}), profileRouter);
 
 app.use('/api/v1/leaderboard', passport.authenticate('jwt', {session: false}), leaderboardRouter);
 
