@@ -240,7 +240,7 @@ npm run dev
 ### Establish socket connection on the client
 
 ```
-let socket = io('', {
+let socket = io('https://lifeline-1zrj.onrender.com', {
             extraHeaders: {
                 Authorization: "Bearer token",
     }});
