@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const passport = require('passport');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 
 const http = require('http');
 const server = http.createServer(app);
@@ -60,8 +61,8 @@ app.use('/api/v1/leaderboard', passport.authenticate('jwt', {session: false}), l
 
 //will be removed soon
 app.get('/', (req, res) => { 
-    return res.status(200).json({message: "Welcome to Lifeline"})
-    // res.sendFile(__dirname + '/index.html');
+    // return res.status(200).json({message: "Welcome to Lifeline"})
+    res.sendFile(__dirname + '/index.html');
 });
 
 // app.get('/login', (req, res) => {
@@ -72,12 +73,33 @@ app.get('/', (req, res) => {
 //     res.render('signup', {error: null});
 // });
 
+io.use(async (socket, next) => {
+    try {
+        // Get the request headers
+        const headers = socket.request.headers;
+        
+        // Access a specific request header
+        const authorizationHeader = headers['authorization'];
+
+        if (!authorizationHeader) return next();
+
+        const token = authorizationHeader.split(" ")[1];
+        const { user } = jwt.verify(token, process.env.JWT_SECRET);
+        
+        socket.userId = user._id;
+        next();
+    } catch (err) {
+        logger.error(err);
+    }
+});
+  
+
 
 
 io.on('connection', async (socket) => {
     console.log('a user connected');
-
-    const user = socket.request.user?.id;
+    
+    const user = socket.userId;
    
     //Get current prompt
     let currentPrompt;
@@ -100,8 +122,7 @@ io.on('connection', async (socket) => {
         const prompt = await getNextPrompt(promptInfo.promptText);
 
         //update user's progress by updating prompt
-        let user = socket.request.user?.id;
-
+        let user = socket.userId;
         if (user) {
             
             const { nextPrompt, isRight } = prompt;

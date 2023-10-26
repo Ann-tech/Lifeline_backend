@@ -21,6 +21,11 @@ passport.use(
 
         async(token, done) => {
             try {
+                const id = token.user._id;
+                const user = await findUserById(id);
+
+                if (!user) return done(null, false);
+
                 return done(null, token.user)
             } catch(err) {
                 done(err)

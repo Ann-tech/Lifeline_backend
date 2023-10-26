@@ -237,6 +237,20 @@ npm run dev
 ]
 ```
 
+### Establish socket connection on the client
+
+```
+let socket = io('', {
+            extraHeaders: {
+                Authorization: "Bearer token",
+    }});
+```
+
+```
+
+
+
+
 <p align="right"><a href="#readme-top">back to top</a></p>
 
 ---
