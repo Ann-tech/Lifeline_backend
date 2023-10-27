@@ -1,234 +1,362 @@
 [
     {
         "title": "welcomeToTwistervillePrompt",
-        "question": "Welcome to Twisterville!\n\nHi Jenny, Welcome to the neighborhood! Throughout the game, we'll present you with different tornado scenarios & you'll be given 3 options. Choose the best option on the first try for the most points. If you choose wrong, don't worry! You'll get the chance to try again, but earn less points.",
+        "promptType": "info",
+        "heading": "Welcome to Twisterville!",
+        "description": "Hi Jenny, Welcome to the neighborhood! Throughout the game, you’ll experience different tornado scenarios & be given 3 options. Choose the best option to earn points. If you choose wrong, don’t worry! You’ll get the chance to try again, but it will cost you.",
         "initialPrompt": true,
-        "options": [
-            {
-                "text": "Start the simulation!",
-                "isRight": null,
-                "nextPrompt": "earlyWarningPrompt"
-            }
-        ]  
+        "nextPrompt": "earlyWarningPromptSetup"
+    },
+    {
+        "title": "earlyWarningPromptSetup",
+        "promptType": "setup",
+        "description": "You’re settling into your new home and unpacking your last few boxes when you notice something unusual. Outside the sky is turning a dark greenish color and the wind starts picking up...",
+        "nextPrompt": "earlyWarningPrompt"
+         
     },
     {
         "title": "earlyWarningPrompt",
-        "question": "You're settling into your new home and unpacking your last few boxes when you notice something unusual. Outside the sky is turning a dark greenish color, and the wind starts picking up. What do you do next?",
+        "promptType": "question",
+        "description": "You’re settling into your new home and unpacking your last few boxes when you notice something unusual. Outside the sky is turning a dark greenish color and the wind starts picking up...",
+        "question": "What should you do?",
         "options": [
             {
                 "text": "Go outside to take a photo.",
-                "nextPrompt": "sweptAwayByTornado"
+                "nextPrompt": "earlyWarningPrompt-f1"
             },
             {
                 "text": "Turn on the radio or TV for weather updates.",
                 "isRight": true,
-                "nextPrompt": "tornadoWatchPrompt"
+                "nextPrompt": "earlyWarningPrompt-f2"
             },
             {
                 "text": "Ignore it; it might just be a regular storm.",
-                "nextPrompt": "feedbackEarlyWarningIgnore"
+                "nextPrompt": "earlyWarningPrompt-f3"
             }
         ]  
+    },
+    {
+        "title": "earlyWarningPrompt-f1",
+        "promptType": "feedback",
+        "heading": "Uh-Oh!",
+        "description": "Woah there, Dorothy! Taking a selfie with a tornado isn’t as cool as it sounds. High winds can be dangerous! Try again.", 
+        "nextPrompt": "earlyWarningPrompt"
+    },
+    {
+        "title": "earlyWarningPrompt-f2",
+        "promptType": "feedback",
+        "positiveFeedback": true,
+        "heading": "Correct!",
+        "description": "If the weather is looking unusual, it’s always a good idea to check in with the local news to make sure you’re safe!",
+        "nextPrompt": "tornadoWatchPromptSetup"
+    },
+    {
+        "title": "earlyWarningPrompt-f3",
+        "promptType": "feedback",
+        "heading": "Uh-Oh!",
+        "description": "Yikes! Ignoring Mother Nature’s mood swings isn’t always the best idea. Feel like playing it safer next time? For 250 points you can try again.",
+        "nextPrompt": "earlyWarningPrompt"
+    },
+    {
+        "title": "tornadoWatchPromptSetup",
+        "promptType": "setup",
+        "description": "\"Good evening, folks. We have an important weather update for you. The National Weather Service has issued a tornado watch for our area. Keep a close eye on the weather, stay tuned to local news and make sure you have a way to receive alerts.\"",
+        "nextPrompt": "tornadoWatchPrompt"     
     },
     {
         "title": "tornadoWatchPrompt",
-        "question": "You hear on the radio that a tornado watch has been issued for your area. This means:",
+        "promptType": "question",
+        "description": "A tornado watch has been issued.",
+        "question": "What does that mean?",
         "options": [
-            {
-                "text": "A tornado has been spotted, and you should take cover immediately.",
-                "nextPrompt": "feedbackPreparingHomeOpenWindows"
-            },
             {
                 "text": "Conditions are right for a tornado, but one hasn't been spotted yet.",
                 "isRight": true,
-                "nextPrompt": "preparingHomePrompt"
+                "nextPrompt": "tornadoWatchPrompt-f1"
             },
             {
-                "text": "There's a slight possibility of a tornado today.",
-                "nextPrompt": "feedbackPreparingHomeCleaning"
+                "text": "A tornado has been spotted, and you should take cover immediately.",
+                "nextPrompt": "tornadoWatchPrompt-f2"
+            },
+            {
+                "text": "A tornado has already passed and you’re in the clear now.",
+                "nextPrompt": "tornadoWatchPrompt-f3"
             }
         ]  
+    },
+    {
+        "title": "tornadoWatchPrompt-f1",
+        "promptType": "feedback",
+        "positiveFeedback": true,
+        "heading": "Correct!",
+        "description": "That’s right! A tornado watch means the weather conditions are creating a highter probability for a tornado today. Once there is a tornado sighting, the watch is elevated to a warning and you should take cover.",
+        "nextPrompt": "preparingHomePromptSetup"
+    },
+    {
+        "title": "tornadoWatchPrompt-f2",
+        "promptType": "feedback",
+        "heading": "Uh-Oh!",
+        "description": "That’s not quite right. After a tornado sighting a tornado warning is issued, not a watch. For 250 points you can try again.",
+        "nextPrompt": "tornadoWatchPrompt"
+    },
+    {
+        "title": "tornadoWatchPrompt-f3",
+        "promptType": "feedback",
+        "heading": "Uh-Oh!",
+        "description": "That’s not quite right. If a tornado is spotted a tornado warning is issued and may remain in effect for 30 minutes. For 250 points you can try again.",
+        "nextPrompt": "tornadoWatchPrompt"
+    },
+    {
+        "title": "preparingHomePromptSetup",
+        "promptType": "setup",
+        "description": "Oh man, a tornado watch! You just moved here and were planning on getting some yard work done today to finish setting up your new outdoor space.",
+        "nextPrompt": "preparingHomePrompt"
+         
     },
     {
         "title": "preparingHomePrompt",
-        "question": "You have some time before the storm hits. What is the best way to prepare your home?",
+        "description": "You have some time before the storm hits.",
+        "question": "What is the best way to prepare your home?",
         "options": [
             {
                 "text": "Open all windows to equalize pressure.",
-                "nextPrompt": "feedbackPreparingHomeOpenWindows"
-            },
-            {
-                "text": "Secure outdoor furniture and move your car inside the garage.",
-                "isRight": true,
-                "nextPrompt": "takingShelterPrompt"
+                "nextPrompt": "preparingHomePrompt-f1"
             },
             {
                 "text": "Start cleaning your yard.",
-                "nextPrompt": "feedbackPreparingHomeCleaning"
+                "nextPrompt": "preparingHomePrompt-f2"
+            },
+            {
+                "text": "Secure outdoor furniture and move your car inside the garage.",
+                "nextPrompt": "preparingHomePrompt-f3",
+                "isRight": true
             }
         ]  
+    },
+    {
+        "title": "preparingHomePrompt-f1",
+        "promptType": "feedback",
+        "heading": "Uh-Oh!",
+        "description": "Ah, the old ‘open the windows’ trick. Contrary to grandma’s tales, homes are damaged by strong winds in a tornado, not pressure. You should stay away from windows completely and try again.",
+        "nextPrompt": "preparingHomePrompt"
+    },
+    {
+        "title": "preparingHomePrompt-f2",
+        "promptType": "feedback",
+        "heading": "Uh-Oh!",
+        "description": "You thought it was a good idea for spring cleaning, but the tornado had other plans. Maybe re-think your priorities and try again.",
+        "nextPrompt": "preparingHomePrompt"
+    },
+    {
+        "title": "preparingHomePrompt-f3",
+        "promptType": "feedback",
+        "positiveFeedback": true,
+        "heading": "Correct!",
+        "description": "That’s right! By moving things inside you can prevent them from getting swept up in the wind and potentially damaging your house or someone elses.",
+        "nextPrompt": "takingShelterPromptSetup"
+    },
+    {
+        "title": "takingShelterPromptSetup",
+        "promptType": "setup",
+        "description": "After pulling your car in the garage you start hearing a loud noise and realize the tornado warning sirens are sounding. A tornado must be near!",
+        "nextPrompt": "takingShelterPrompt"
+         
     },
     {
         "title": "takingShelterPrompt",
-        "question": "The warning sirens are blaring. Where is the safest place to take shelter in your home?",
+        "description": "The warning sirens are blaring.",
+        "question": "Where is the safest place to take shelter?",
         "options": [
             {
-                "text": "In the southwest corner of your basement.",
-                "isRight": true,
-                "nextPrompt": "protectingYourselfPrompt"
+                "text": "In your basement.",
+                "nextPrompt": "takingShelterPrompt-f1",
+                "isRight": true
             },
             {
                 "text": "In a hallway with windows.",
-                "nextPrompt": "feedbackPreparingHomeOpenWindows"
+                "nextPrompt": "takingShelterPrompt-f2"
             },
             {
                 "text": "In your upstairs bedroom.",
-                "nextPrompt": "sweptAwayByTornado"
+                "nextPrompt": "takingShelterPrompt-f3"
             }
         ]  
+    },
+    {
+        "title": "takingShelterPrompt-f1",
+        "promptType": "feedback",
+        "positiveFeedback": true,
+        "heading": "Correct!",
+        "description": "That’s right! The safest place to hide is the interior part of a basement. If you don’t have a basement, hide in an interior room, without windows, on the lowest floor of your home. ",
+        "nextPrompt": "protectingYourselfPromptSetup"
+    },
+    {
+        "title": "takingShelterPrompt-f2",
+        "promptType": "feedback",
+        "heading": "Uh-Oh!",
+        "description": "That’s not quite right. Stay away from all windows! Get to the lowest level of your home and go in an interior room to protect yourself from a tornado.",
+        "nextPrompt": "takingShelterPrompt"
+    },
+    {
+        "title": "takingShelterPrompt-f3",
+        "promptType": "feedback",
+        "heading": "Uh-Oh!",
+        "description": "The worst place to be is the top floor and especially in a room with windows. Windows may explode due to high winds and can cause injury to anyone nearby. Stay completely away from windows.",
+        "nextPrompt": "takingShelterPrompt"
+    },
+    {
+        "title": "protectingYourselfPromptSetup",
+        "promptType": "setup",
+        "description": "You grab your battery powered weather radio and run down to the basement. You start to  hear a loud rumble, almost like a train and realize the tornado is near.",
+        "nextPrompt": "protectingYourselfPrompt"
+         
     },
     {
         "title": "protectingYourselfPrompt",
-        "question": "You're in the basement, and you can hear the tornado approaching. What should you do to protect yourself?",
+        "description": "You hear the tornado approaching.",
+        "question": "What should you do to protect yourself?",
         "options": [
             {
-                "text": "Stand near a window to watch the tornado's path.",
-                "nextPrompt": "sweptAwayByTornado"
+                "text": "Look out a window to watch the tornado’s path.",
+                "nextPrompt": "protectingYourselfPrompt-f1"
             },
             {
-                "text": "Get under something sturdy like a workbench or stairs and protect your head and neck.",
-                "isRight": true,
-                "nextPrompt": "postTornadoPrompt"
+                "text": "Get under something sturdy like a workbench or stairwell and protect your head and neck.",
+                "nextPrompt": "protectingYourselfPrompt-f2",
+                "isRight": true
             },
             {
-                "text": "Scream and run outside!!!",
-                "nextPrompt": "sweptAwayByTornado"
+                "text": "Sit down in the center of the room.",
+                "nextPrompt": "protectingYourselfPrompt-f3"
             }
         ]  
+    },
+    {
+        "title": "protectingYourselfPrompt-f1",
+        "promptType": "feedback",
+        "heading": "Uh-Oh!",
+        "description": "The high winds from the tornado can break the glass and injure you. Try again.",
+        "nextPrompt": "protectingYourselfPrompt"
+    },
+    {
+        "title": "protectingYourselfPrompt-f2",
+        "promptType": "feedback",
+        "positiveFeedback": true,
+        "heading": "Correct!",
+        "description": "Good thinking! If the building collapses it’s best to have a strong structure to protect you. ",
+        "nextPrompt": "postTornadoPromptSetup"
+    },
+    {
+        "title": "protectingYourselfPrompt-f3",
+        "promptType": "feedback",
+        "heading": "Uh-Oh!",
+        "description": "That’s not quite right. While the center of the room may be better than the corner, you can take more steps to protect yourself.",
+        "nextPrompt": "protectingYourselfPrompt"
+    },
+    {
+        "title": "postTornadoPromptSetup",
+        "promptType": "setup",
+        "description": "The roaring seemed to last an eternity, though in reality was only a matter of seconds. The tornado seems to have passed. ",
+        "nextPrompt": "postTornadoPrompt"
+         
     },
     {
         "title": "postTornadoPrompt",
-        "question": "The tornado has passed, but you're unsure of the situation outside. What's the safest thing to do next?",
+        "description": "The tornado has passed, but you're unsure of the situation outside.",
+        "question": "What's the safest thing to do next?",
         "options": [
             {
                 "text": "Go outside immediately to check the damage.",
-                "nextPrompt": "sweptAwayByTornado"
+                "nextPrompt": "postTornadoPrompt-f1"
             },
             {
                 "text": "Wait a few minutes and then leave the basement.",
-                "nextPrompt": "helpingNeighborsPrompt"
+                "nextPrompt": "postTornadoPrompt-f2"
             },
             {
                 "text": "Listen to the radio or your emergency weather app for updates before deciding.",
-                "isRight": true,
-                "nextPrompt": "helpingNeighborsPrompt"
+                "nextPrompt": "postTornadoPrompt-f3",
+                "isRight": true
             }
         ]  
+    },
+    {
+        "title": "postTornadoPrompt-f1",
+        "promptType": "feedback",
+        "heading": "Uh-Oh!",
+        "description": "Tornadoes can cause a lot of damage and debris that could lead to injury and you may not know if another one could be on the way. ",
+        "nextPrompt": "postTornadoPrompt"
+    },
+    {
+        "title": "postTornadoPrompt-f2",
+        "promptType": "feedback",
+        "heading": "Uh-Oh!",
+        "description": "That’s not quite right. You should gather more information before leaving your safety zone.",
+        "nextPrompt": "postTornadoPrompt"
+    },
+    {
+        "title": "postTornadoPrompt-f3",
+        "promptType": "feedback",
+        "positiveFeedback": true,
+        "heading": "Correct!",
+        "description": "You’ve got it! It’s a good idea to check in for more weather and news updates to make sure your area is in the clear of tornado activity.",
+        "nextPrompt": "helpingNeighborsPromptSetup"
+    },
+    {
+        "title": "helpingNeighborsPromptSetup",
+        "promptType": "setup",
+        "description": "You turn on your weather radio to get updates on the storm’s path. The tornado has passed Twisterville and you’re in the clear. Luckily your house seems mostly unscathed, but you look outside to see your street in shambles. Trees were uprooted, debris is scattered everywhere and your neighbors’ house has been torn apart.",
+        "nextPrompt": "helpingNeighborsPrompt"
+         
     },
     {
         "title": "helpingNeighborsPrompt",
-        "question": "Your neighbors' house has been severely damaged, and they need assistance. What should you do first?",
+        "description": "Your neighbors' house has been damaged and they need assistance",
+        "question": "What should you do first?",
         "options": [
             {
                 "text": "Head over immediately to offer help.",
-                "nextPrompt": "gameOverPrompt"
+                "nextPrompt": "helpingNeighborsPrompt-f1"
             },
             {
                 "text": "Ensure it's safe outside and take an emergency kit with you.",
-                "isRight": true,
-                "nextPrompt": "congratsPrompt"
+                "nextPrompt": "helpingNeighborsPrompt-f2"
+                
             },
             {
                 "text": "Wait for professional help to arrive.",
-                "nextPrompt": "gameOverPrompt"
+                "nextPrompt": "helpingNeighborsPrompt-f3",
+                "isRight": true
             }
         ]  
     },
     {
-        "title": "gameOverPrompt",
-        "question": "Game Over! 🌪️\n\nThanks for playing the Twisterville Tornado Simulation! Remember, always prioritize safety during severe weather. Want to play again?",
-        "options": [
-            {
-                "text": "Yes, let's go again!",
-                "isRight": null,
-                "nextPrompt": "welcomeToTwistervillePrompt"
-            },
-            {
-                "text": "No, I've had enough tornadoes for one day.",
-                "isRight": null,
-                "nextPrompt": "welcomeToTwistervillePrompt"
-            }
-        ]  
+        "title": "helpingNeighborsPrompt-f1",
+        "promptType": "feedback",
+        "heading": "Uh-Oh!",
+        "description": "Be careful! You have a good heart, but you shouldn’t enter a damaged building until emergency officials deem it safe. Try again.",
+        "nextPrompt": "helpingNeighborsPrompt"
     },
     {
-        "title": "congratsPrompt",
-        "question": "Awesome job!",
-        "options": [
-            {
-                "text": "End Game",
-                "isRight": null,
-                "nextPrompt": "gameOverPrompt"
-            }
-        ]  
+        "title": "helpingNeighborsPrompt-f2",
+        "promptType": "feedback",
+        "heading": "Uh-Oh!",
+        "description": "That’s not quite right. It can be unsafe to enter a damaged building. Stay cautious of other hazardous debris like exposed nails and broken glass. Helping your neighbors might be a job for the professionals.",
+        "nextPrompt": "helpingNeighborsPrompt"
     },
     {
-        "title": "feedbackEarlyWarningIgnore",
-        "question": "Yikes! Ignoring Mother Nature's mood swings isn't always the best idea. Feel like playing it safer this time?",
-        "options": [
-            {
-                "text": "Yes, let's be friends with the weather.",
-                "isRight": true,
-                "nextPrompt": "earlyWarningPrompt"
-            },
-            {
-                "text": "No, I dance in the face of danger.",
-                "nextPrompt": "gameOverPrompt"
-            }
-        ]  
+        "title": "helpingNeighborsPrompt-f3",
+        "promptType": "feedback",
+        "positiveFeedback": true,
+        "heading": "Correct!",
+        "description": "Good call! You could get injured trying to help your neighbors on your own. Calling emergency professionals for help is the best course of action to keep everyone safe. ",
+        "nextPrompt": "thankYouPrompt"
     },
     {
-        "title": "feedbackPreparingHomeOpenWindows",
-        "question": "Ah, the old 'open the windows' trick. Contrary to grandma's tales, it doesn't really help against tornadoes. Try again?",
-        "options": [
-            {
-                "text": "Sure, grandma won't mind.",
-                "isRight": true,
-                "nextPrompt": "preparingHomePrompt"
-            },
-            {
-                "text": "No, I dance in the face of danger.",
-                "nextPrompt": "gameOverPrompt"
-            }
-        ]  
-    },
-    {
-        "title": "feedbackPreparingHomeCleaning",
-        "question": "You thought it was a good time for spring cleaning, but the tornado had other plans. Maybe re-think your priorities? 🌪️🍃",
-        "options": [
-            {
-                "text": "Right! Let's tidy up later.",
-                "isRight": true,
-                "nextPrompt": "preparingHomePrompt"
-            },
-            {
-                "text": "I've got a clean yard. I win!",
-                "nextPrompt": "gameOverPrompt"
-            }
-        ]  
-    },
-    {
-        "title": "sweptAwayByTornado",
-        "question": "Whoa there, Dorothy! Looks like you're not in Kansas anymore. Taking a selfie with a tornado in the background isn't as cool as it sounds. Remember, tornadoes don't like photobombers! Want to give it another shot?",
-        "options": [
-            {
-                "text": "Yes, Toto and I are ready!",
-                "isRight": true,
-                "nextPrompt": "welcomeToTwistervillePrompt"
-            },
-            {
-                "text": "No, I've always wanted to meet the Wizard.",
-                "nextPrompt": "gameOverPrompt"
-            }
-        ]  
+        "title": "thankYouPrompt",
+        "finalPrompt": true,
+        "promptType": "info",
+        "heading": "Thanks for Playing!",
+        "description": "Lifeline is growing! Keep checking back for new levels added to the story and stay tuned for our other natural disaster games releasing soon!"
     }
 ]
