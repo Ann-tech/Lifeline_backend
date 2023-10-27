@@ -6,22 +6,43 @@ const promptSchema = new Schema({
         type: String,
         required: true
     },
-    question: {
+    promptType: {
+        type: String,
+        enum: ["info", "setup", "question", "feedback"],
+        required: true
+    },
+    heading: {
+        type: String
+    },
+    description: {
         type: String,
         required: true
+    },
+    nextPrompt: {
+        type: String
+    },
+    positiveFeedback: {
+        type: Boolean,
     },
     initialPrompt: {
         type: Boolean,
         required: true,
         default: false
     },
+    finalPrompt: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    question: {
+        type: String
+    },
     options: [
         {
             text: String,
             isRight: {
                 type: Boolean,
-                default: false,
-                allowNull: true
+                default: false
             },
             nextPrompt: {
                 type: String,
@@ -29,6 +50,13 @@ const promptSchema = new Schema({
             }
         }
     ]
+});
+
+promptSchema.pre('save', function (next) {
+    if (this.promptType === 'feedback') {
+      this.positiveFeedback = false;
+    }
+    next();
 });
 
 

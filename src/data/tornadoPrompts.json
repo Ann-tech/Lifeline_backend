@@ -115,6 +115,7 @@
     },
     {
         "title": "preparingHomePrompt",
+        "promptType": "question",
         "description": "You have some time before the storm hits.",
         "question": "What is the best way to prepare your home?",
         "options": [
@@ -164,6 +165,7 @@
     },
     {
         "title": "takingShelterPrompt",
+        "promptType": "question",
         "description": "The warning sirens are blaring.",
         "question": "Where is the safest place to take shelter?",
         "options": [
@@ -213,6 +215,7 @@
     },
     {
         "title": "protectingYourselfPrompt",
+        "promptType": "question",
         "description": "You hear the tornado approaching.",
         "question": "What should you do to protect yourself?",
         "options": [
@@ -262,6 +265,7 @@
     },
     {
         "title": "postTornadoPrompt",
+        "promptType": "question",
         "description": "The tornado has passed, but you're unsure of the situation outside.",
         "question": "What's the safest thing to do next?",
         "options": [
@@ -311,6 +315,7 @@
     },
     {
         "title": "helpingNeighborsPrompt",
+        "promptType": "question",
         "description": "Your neighbors' house has been damaged and they need assistance",
         "question": "What should you do first?",
         "options": [
@@ -354,8 +359,8 @@
     },
     {
         "title": "thankYouPrompt",
-        "finalPrompt": true,
         "promptType": "info",
+        "finalPrompt": true,
         "heading": "Thanks for Playing!",
         "description": "Lifeline is growing! Keep checking back for new levels added to the story and stay tuned for our other natural disaster games releasing soon!"
     }
