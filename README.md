@@ -127,7 +127,7 @@ npm run dev
 ### Signup / signin with google
 
 - Route: /auth/google
-- Method: POST
+- Method: GET
 
 - url: https://lifeline-1zrj.onrender.com/api/v1/auth/google
 
