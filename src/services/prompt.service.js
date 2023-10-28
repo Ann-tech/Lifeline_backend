@@ -1,4 +1,5 @@
-const { findUserById, updateUserPrompt } = require("../database/queries/users")
+const { findUserById, updateUserPrompt } = require("../database/queries/users");
+const { getPromptByTitle, findPromptBasedOnTitleAndOption } = require('../database/queries/prompts')
 
 async function getCurrentPrompt(userId) {
     try {
@@ -9,9 +10,44 @@ async function getCurrentPrompt(userId) {
     }
 }
 
-async function updateUserPromptProgress(userId, currentPromptId, isRight) {
+// async function getNextPrompt(promptText) {
+//     try {
+//         const prompt = await findPromptBasedOnText(promptText);
+//         const title = prompt.nextPrompt;
+
+//         const nextPrompt = await getPromptByTitle(title);
+//         return { isRight: prompt.isRight, nextPrompt };
+//     } catch(err) {
+//         throw err;
+//     }
+// }
+
+async function getNextPrompt(promptInfo) {
     try {
-        const user = await updateUserPrompt(userId, currentPromptId, isRight);
+        const { promptType, title, text } = promptInfo;
+
+        if (promptType !== 'question') {
+            const prompt = await getPromptByTitle(title);
+            const nextPrompt = await getPromptByTitle(prompt.nextPrompt);
+
+            if (promptType == 'feedback') {
+                return { nextPrompt, positiveFeedback: prompt.positiveFeedback };
+            }
+            return { nextPrompt };
+        } else {
+            const prompt = await findPromptBasedOnTitleAndOption(title, text);
+            const promptTitle = prompt.nextPrompt;
+            const nextPrompt = await getPromptByTitle(promptTitle);
+            return { isRight: prompt.isRight, nextPrompt };
+        }     
+    } catch(err) {
+        throw err;
+    }
+}
+
+async function updateUserPromptProgress(userId, currentPromptId, promptType, isRight, positiveFeedback) {
+    try {
+        const user = await updateUserPrompt(userId, currentPromptId, promptType, isRight, positiveFeedback);
         return { score: user.scores.tornadoGame.score };
     
     } catch(err) {
@@ -20,5 +56,6 @@ async function updateUserPromptProgress(userId, currentPromptId, isRight) {
 }
 module.exports = {
     getCurrentPrompt,
+    getNextPrompt,
     updateUserPromptProgress
 }

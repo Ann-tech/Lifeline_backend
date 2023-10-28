@@ -45,7 +45,7 @@ const userSchema = new Schema({
                 type: Number,
                 min: 0,
                 required: true,
-                default: 0
+                default: 750
             }
         }
     },

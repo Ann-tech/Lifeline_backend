@@ -362,6 +362,7 @@
         "promptType": "info",
         "finalPrompt": true,
         "heading": "Thanks for Playing!",
-        "description": "Lifeline is growing! Keep checking back for new levels added to the story and stay tuned for our other natural disaster games releasing soon!"
+        "description": "Lifeline is growing! Keep checking back for new levels added to the story and stay tuned for our other natural disaster games releasing soon!",
+        "nextPrompt": "welcomeToTwistervillePrompt"
     }
 ]

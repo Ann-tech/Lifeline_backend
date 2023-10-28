@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./styles.css">
     <title>Lifeline</title>
     <style>
-        body {
+        /* body {
             display: flex;
             justify-content: center;
         }
@@ -23,83 +23,180 @@
             fieldset {
                 width: 100%;
             }
-        }
+        } */
     </style>
     
 </head>
 <body>
-    <h3></h3>
-    <fieldset>
-        <legend></legend>
-        <div id="container">
+    <h2 id="heading"></h2>
+    <p id="description"></p>
+    <fieldset hidden>
+        <legend>
             
-        </div>
+        </legend>
+        <div id="group"></div>
     </fieldset>
+    <div id="feedbackContainer" hidden>
+        <h2 id="feedbackHeading"></h2>
+        <p id="feedbackDescription"></p>
+    </div>
+    <h3 id="score"></h3>
+    <button></button>
+    
 
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script>
         let socket = io('', {
             extraHeaders: {
-                Authorization: "Bearer token",
+                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1M2QwMmQzYzg3ZjNkOWE2ZmQyMmQ3YiIsInVzZXJuYW1lIjoiYm9iIn0sImlhdCI6MTY5ODQ5NzI0MCwiZXhwIjoxNjk5MTAyMDQwfQ.gAwPgWv3JbhCwiuZX717f82EKfpqnb5ZBgT1jPGaNJM",
             },
         });
 
-        const container = document.getElementById('container');
+        const fieldset = document.querySelector('fieldset');
 
         //get and display prompts
         socket.on('getPrompt', prompt => {
-            // Clear the content of container before populating new contents
-            container.innerHTML = ''; 
-            ({question, options} = prompt.nextPrompt);
+            let currentPrompt = prompt.nextPrompt;
+            
+            const { heading, description, title, promptType } = currentPrompt;
+           
+            const headingContainer = document.querySelector('#heading');
+            const buttonElement = document.querySelector('button');
 
-            document.querySelector('legend').innerText = question;
-        
-            for (let i = 0; i < options.length; i++) {
-                //grab text and next prompt
-                ({text, nextPrompt} = options[i]);
+            const feedbackContainer = document.querySelector('#feedbackContainer');
 
-                // Create the radio input element
-                const radioInput = document.createElement('input');
-                radioInput.type = 'radio';
+            //display feedback beneath prompt
+            if (promptType == 'feedback') {
+                feedbackContainer.hidden = false;
 
-                //set id to link radio to label
-                radioInput.setAttribute('id', i);
+                const feedbackHeading = document.querySelector('#feedbackHeading');
+                const feedbackDescription = document.querySelector('#feedbackDescription');
 
-                //set radio input value
-                radioInput.value = text;
+                feedbackHeading.innerText = heading;
 
-                //create label for input
-                const labelInput = document.createElement('label');
+                feedbackDescription.innerText = description;
+                feedbackDescription.dataset.title = title;
+                feedbackDescription.dataset.promptType = promptType;
 
-                //link label to radio
-                labelInput.setAttribute('for', i);
+                ({ positiveFeedback } = currentPrompt);
 
-                //show text in label
-                labelInput.innerText = text;
+                if (positiveFeedback) {
+                    buttonElement.textContent = "CONTINUE"
+                } else {
+                    buttonElement.textContent = "TRY AGAIN"
+                }  
+            } else {
+                feedbackContainer.hidden = true;
+
+                if (heading) {
+                    headingContainer.innerText = heading;
+                } else {
+                    headingContainer.innerText = "";
+                }
+
+                const descriptionContainer = document.querySelector('#description');
+                descriptionContainer.dataset.title = title;
+                descriptionContainer.dataset.promptType = promptType;
+                descriptionContainer.innerText = description;
+
                 
-
-                //create element to group input and label
-                const group = document.createElement('div');
-                group.appendChild(radioInput);
-                group.appendChild(labelInput);
-
-                //append group to container
-                container.appendChild(group);
-                
+                buttonElement.textContent = 'CONTINUE';
             }
-            const scoreContainer = document.querySelector('h3');
-            scoreContainer.innerText = prompt.score;
+
+            if (promptType == 'question') {
+                const group = document.querySelector('#group');
+
+                group.innerHTML = "";
+
+                fieldset.hidden = false;
+
+                //delete all labels and radio buttons if they exist in the dom
+                
+
+                ({question, options} = currentPrompt);
+
+                document.querySelector('legend').innerText = question;
+                
+                for (let i = 0; i < options.length; i++) {
+
+                    //grab text and next prompt
+                    ({text, currentPrompt} = options[i]);
+
+                    // Create the radio input element
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+
+                    //set id to link radio to label
+                    radioInput.setAttribute('id', i);
+
+                    //set radio input value
+                    radioInput.value = text;
+
+                    //create label for input
+                    const labelInput = document.createElement('label');
+
+                    //link label to radio
+                    labelInput.setAttribute('for', i);
+
+                    //show text in label
+                    labelInput.innerText = text;
+                    
+                    
+
+                    group.appendChild(radioInput);
+                    group.appendChild(labelInput);
+                    
+                }
+
+            } else {
+                fieldset.hidden = true;
+            }
+
+                
+            const scoreContainer = document.querySelector('#score');
+            scoreContainer.innerText = prompt.score;    
+        
+            
         });
 
-        // Add a "change" event listener to the container
-        container.addEventListener('change', function (event) {
+
+        const button = document.querySelector('button');
+        button?.addEventListener('click', function (event) {
+            let title, promptType, score;
+
+            const feedbackContainer = document.querySelector('#feedbackContainer');
+            const feedbackDescription = document.querySelector('#feedbackDescription');
+            const descriptionContainer = document.querySelector('#description');
+
+            if (!feedbackContainer.hidden) {
+                title = feedbackDescription.dataset.title;
+                promptType = feedbackDescription.dataset.promptType;
+            } else {
+                title = descriptionContainer.dataset.title;
+                promptType = descriptionContainer.dataset.promptType;
+            }
+
+            score = +document.querySelector('#score').innerText;
+
+            const promptInfo = {title, score, promptType};
+            console.log(promptInfo);
+
+            //send prompt info to retrieve next prompt
+            socket.emit('getNextPrompt', promptInfo);
+        })
+
+        //Add a "change" event listener to fieldset
+        fieldset.addEventListener('change', function (event) {
+            const descriptionContainer = document.querySelector('#description');
             const selectedRadio = event.target;
 
             if (selectedRadio.type === 'radio') {
-                const promptText = selectedRadio.value;
-                const score = +document.querySelector('h3').innerText;
+                const title = descriptionContainer.dataset.title;
+                const promptType = descriptionContainer.dataset.promptType;
+                const text = selectedRadio.value;
+                const score = +document.querySelector('#score').innerText;
 
-                const promptInfo = {promptText, score};
+                const promptInfo = {title, promptType, text, score};
                 socket.emit('getNextPrompt', promptInfo);
             }
         });

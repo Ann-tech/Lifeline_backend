@@ -6,7 +6,7 @@ async function insertAllTornadoPrompts() {
     try {
         const prompts = await getAllPrompts();
         if (prompts.length === 0) {
-            await Prompt.insertMany(tornadoPrompts, {upsert: true});
+           const prompts = await Prompt.insertMany(tornadoPrompts, {upsert: true});
         }
         return prompts;
     } catch(err) {
@@ -32,9 +32,9 @@ async function getInitialPrompt() {
     }
 }
 
-async function findPromptBasedOnText(promptText) {
+async function findPromptBasedOnTitleAndOption(title, selectedText) {
     try {
-        const prompt = await Prompt.findOne({ 'options.text': promptText });
+        const prompt = await Prompt.findOne({ 'options.text': selectedText, title });
         const { options } = prompt;
         
 
@@ -43,7 +43,7 @@ async function findPromptBasedOnText(promptText) {
 
             const promptInfo = {};
             
-            if (text === promptText) {
+            if (text === selectedText) {
                 promptInfo.isRight = isRight;
                 promptInfo.nextPrompt = nextPrompt;
 
@@ -66,19 +66,9 @@ async function getPromptByTitle(title) {
     }
 }
 
-async function getNextPrompt(promptText) {
-    try {
-        const prompt = await findPromptBasedOnText(promptText);
-        const title = prompt.nextPrompt;
-
-        const nextPrompt = await getPromptByTitle(title);
-        return { isRight: prompt.isRight, nextPrompt };
-    } catch(err) {
-        throw err;
-    }
-}
 module.exports = {
     insertAllTornadoPrompts,
     getInitialPrompt,
-    getNextPrompt
+    findPromptBasedOnTitleAndOption,
+    getPromptByTitle
 }

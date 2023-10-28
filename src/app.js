@@ -27,8 +27,8 @@ const authRouter = require('./routes/auth.route');
 const profileRouter = require('./routes/profile.route');
 const leaderboardRouter = require('./routes/leaderboardRouter');
 
-const { getInitialPrompt, getNextPrompt } = require('./database/queries/prompts');
-const { getCurrentPrompt, updateUserPromptProgress } = require('./services/prompt.service');
+const { getInitialPrompt } = require('./database/queries/prompts');
+const { getCurrentPrompt, getNextPrompt, updateUserPromptProgress } = require('./services/prompt.service');
 const { calculateCurrentScore } = require('./utils');
 
 require('dotenv').config();
@@ -84,9 +84,9 @@ io.use(async (socket, next) => {
         if (!authorizationHeader) return next();
 
         const token = authorizationHeader.split(" ")[1];
-        const { user } = jwt.verify(token, process.env.JWT_SECRET);
         
-        socket.userId = user._id;
+        const { user } = jwt.verify(token, process.env.JWT_SECRET);
+        if (user) socket.userId = user._id;
         next();
     } catch (err) {
         logger.error(err);
@@ -108,32 +108,32 @@ io.on('connection', async (socket) => {
     if (!user) {
         currentPrompt = await getInitialPrompt();
         prompt.nextPrompt = currentPrompt;
-        prompt.score = 0;
+        prompt.score = 750;
     } else {
         const id = user;
         currentPrompt = await getCurrentPrompt(id);
         prompt = currentPrompt;
+        
     }
-
     
     socket.emit('getPrompt', prompt);
 
     socket.on('getNextPrompt', async promptInfo => {
-        const prompt = await getNextPrompt(promptInfo.promptText);
-
+        const { promptType } = promptInfo;
+        const prompt = await getNextPrompt(promptInfo);
+    
         //update user's progress by updating prompt
         let user = socket.userId;
         if (user) {
-            
-            const { nextPrompt, isRight } = prompt;
-            const updatedUser = await updateUserPromptProgress(user, nextPrompt._id, isRight);
+            const { nextPrompt } = prompt;
+            const updatedUser = await updateUserPromptProgress(user, nextPrompt._id, promptType, prompt.isRight, prompt.positiveFeedback);
         
             prompt.score = updatedUser.score;
         } else {
-            const score = calculateCurrentScore(promptInfo.score, prompt.isRight);
+            const score = calculateCurrentScore(promptInfo.score, promptType, prompt.isRight, prompt.positiveFeedback);
             prompt.score = score;
         }
-        
+
         socket.emit('getPrompt', prompt);
     })
     

@@ -246,6 +246,18 @@ let socket = io('https://lifeline-1zrj.onrender.com', {
     }});
 ```
 
+### To get next prompt - Emit a getNextPrompt event
+
+```
+socket.emit('getNextPrompt', promptInfo)
+
+//if promptType is a question prompt
+promptInfo = {title, promptType, text, score}
+
+//for other promptTypes
+promptInfo = {title, score, promptType}
+```
+
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 

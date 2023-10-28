@@ -56,27 +56,24 @@ async function updateUserInfo(userId, userData) {
     }
 }
 
-async function updateUserPrompt(userId, currentPromptId, isRight) {
+async function updateUserPrompt(userId, currentPromptId, promptType, isRight, positiveFeedback) {
     try {
         let user = await User.findById(userId);
         user.currentTornadoPromptId = currentPromptId;
 
-        user = await user.populate('currentTornadoPromptId');
-
-        if (user.currentTornadoPromptId.initialPrompt) {
-            user.scores.tornadoGame.score = 0;
+        if (promptType == 'setup' || promptType == 'info') {
+            await user.save();
+            return user;
         }
+        // user = await user.populate('currentTornadoPromptId');
 
         const currentScore = user.scores.tornadoGame.score;
-        
-        if (isRight) {
-            user.scores.tornadoGame.score = calculateCurrentScore(currentScore, isRight);
-        } else if (isRight === null) {
-            user.scores.tornadoGame.score = calculateCurrentScore(currentScore, isRight);
-        } else {
-            if (currentScore - SCORE / 2 >= 0) {
-                user.scores.tornadoGame.score = calculateCurrentScore(currentScore, isRight);
-            }
+        if (isRight && promptType == 'question') {
+            user.scores.tornadoGame.score = calculateCurrentScore(currentScore, promptType, isRight);
+        } 
+
+        if (promptType == 'feedback' && !positiveFeedback) {
+            user.scores.tornadoGame.score = calculateCurrentScore(currentScore, promptType, isRight, positiveFeedback);
         }
 
         await user.save();

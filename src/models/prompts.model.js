@@ -53,8 +53,12 @@ const promptSchema = new Schema({
 });
 
 promptSchema.pre('save', function (next) {
+    console.log(this);
     if (this.promptType === 'feedback') {
       this.positiveFeedback = false;
+    }
+    if (!this.options) {
+        delete this.options;
     }
     next();
 });
