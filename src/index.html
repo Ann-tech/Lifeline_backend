@@ -48,7 +48,7 @@
     <script>
         let socket = io('', {
             extraHeaders: {
-                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY1M2QwMmQzYzg3ZjNkOWE2ZmQyMmQ3YiIsInVzZXJuYW1lIjoiYm9iIn0sImlhdCI6MTY5ODQ5NzI0MCwiZXhwIjoxNjk5MTAyMDQwfQ.gAwPgWv3JbhCwiuZX717f82EKfpqnb5ZBgT1jPGaNJM",
+                Authorization: "Bearer token",
             },
         });
 
@@ -179,7 +179,6 @@
             score = +document.querySelector('#score').innerText;
 
             const promptInfo = {title, score, promptType};
-            console.log(promptInfo);
 
             //send prompt info to retrieve next prompt
             socket.emit('getNextPrompt', promptInfo);

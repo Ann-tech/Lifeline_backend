@@ -45,9 +45,9 @@ async function getNextPrompt(promptInfo) {
     }
 }
 
-async function updateUserPromptProgress(userId, currentPromptId, promptType, isRight, positiveFeedback) {
+async function updateUserPromptProgress(userId, currentPromptId, promptType, isRight, positiveFeedback, initialPrompt) {
     try {
-        const user = await updateUserPrompt(userId, currentPromptId, promptType, isRight, positiveFeedback);
+        const user = await updateUserPrompt(userId, currentPromptId, promptType, isRight, positiveFeedback, initialPrompt);
         return { score: user.scores.tornadoGame.score };
     
     } catch(err) {
