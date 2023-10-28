@@ -46,11 +46,7 @@
 
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script>
-        let socket = io('', {
-            extraHeaders: {
-                Authorization: "Bearer token",
-            },
-        });
+        let socket = io('');
 
         const fieldset = document.querySelector('fieldset');
 
