@@ -33,7 +33,10 @@ const { calculateCurrentScore } = require('./utils');
 
 require('dotenv').config();
 
-app.use( cors() );
+app.use( cors({
+    origin: "*",
+    credential: true
+}) );
 
 // Add the morgan middleware
 app.use(morganMiddleware);
