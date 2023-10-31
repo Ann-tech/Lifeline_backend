@@ -35,7 +35,7 @@ require('dotenv').config();
 
 app.use( cors({
     origin: "*",
-    credential: true
+    credentials: true
 }) );
 
 // Add the morgan middleware
