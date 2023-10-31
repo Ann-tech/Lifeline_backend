@@ -122,19 +122,28 @@ io.on('connection', async (socket) => {
     socket.emit('getPrompt', prompt);
 
     socket.on('getNextPrompt', async promptInfo => {
-        const { promptType } = promptInfo;
-        const prompt = await getNextPrompt(promptInfo);
-    
         //update user's progress by updating prompt
         let user = socket.userId;
+
+        const { promptType } = promptInfo;
+
+        promptInfo.userId = user;
+        const prompt = await getNextPrompt(promptInfo);
     
         const { nextPrompt } = prompt;
         
         if (user) {
             // const { nextPrompt } = prompt;
-            const updatedUser = await updateUserPromptProgress(user, nextPrompt._id, promptType, prompt.isRight, prompt.positiveFeedback, nextPrompt.initialPrompt);
+            let updatedUser;
+            if (nextPrompt.finalPrompt) {
+                const initialPrompt = await getInitialPrompt();
+                updatedUser = await updateUserPromptProgress(user, initialPrompt._id, nextPrompt.promptType, null, null, true);
+            } else {
+                updatedUser = await updateUserPromptProgress(user, nextPrompt._id, promptType, prompt.isRight, prompt.positiveFeedback, nextPrompt.initialPrompt);
+            }
         
             prompt.score = updatedUser.score;
+
         } else {
             const score = calculateCurrentScore(promptInfo.score, promptType, prompt.isRight, prompt.positiveFeedback, nextPrompt.initialPrompt);
             prompt.score = score;

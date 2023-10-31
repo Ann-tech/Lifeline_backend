@@ -24,7 +24,7 @@ async function getCurrentPrompt(userId) {
 
 async function getNextPrompt(promptInfo) {
     try {
-        const { promptType, title, text } = promptInfo;
+        const { promptType, title, text, userId } = promptInfo;
 
         if (promptType !== 'question') {
             const prompt = await getPromptByTitle(title);
