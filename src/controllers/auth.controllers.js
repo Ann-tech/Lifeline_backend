@@ -49,7 +49,8 @@ async function httpLoginUser(req, res, next) {
                     success: true,
                     message: info.message,
                     token,
-                    username: user.username
+                    username: user.username,
+                    email: user.email
                 })
 
                 // if (err) {
