@@ -137,15 +137,15 @@ io.on('connection', async (socket) => {
             let updatedUser;
             if (nextPrompt.finalPrompt) {
                 const initialPrompt = await getInitialPrompt();
-                updatedUser = await updateUserPromptProgress(user, initialPrompt._id, nextPrompt.promptType, null, null, true);
+                updatedUser = await updateUserPromptProgress(user, initialPrompt._id, nextPrompt.promptType, null, true);
             } else {
-                updatedUser = await updateUserPromptProgress(user, nextPrompt._id, promptType, prompt.isRight, prompt.positiveFeedback, nextPrompt.initialPrompt);
+                updatedUser = await updateUserPromptProgress(user, nextPrompt._id, promptType, prompt.isRight, nextPrompt.initialPrompt);
             }
         
             prompt.score = updatedUser.score;
 
         } else {
-            const score = calculateCurrentScore(promptInfo.score, promptType, prompt.isRight, prompt.positiveFeedback, nextPrompt.initialPrompt);
+            const score = calculateCurrentScore(promptInfo.score, promptType, prompt.isRight, nextPrompt.initialPrompt);
             prompt.score = score;
         }
 

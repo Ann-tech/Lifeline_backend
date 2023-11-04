@@ -1,13 +1,13 @@
 const SCORE = 500;
 
-function calculateCurrentScore(currentScore, promptType, isRight, positiveFeedback, initialPrompt) {
+function calculateCurrentScore(currentScore, promptType, isRight, initialPrompt) {
     if (initialPrompt) return 750;
     if (promptType == 'setup' || promptType == 'info') return currentScore;
     if (isRight && promptType == 'question') {
         currentScore = currentScore + SCORE;
     } 
 
-    if (promptType == 'feedback' && !positiveFeedback) {
+    if (!isRight && promptType == 'question') {
         if (currentScore - SCORE / 2 >= 0) {
             currentScore = currentScore - SCORE / 2;
         }
