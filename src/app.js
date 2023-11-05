@@ -30,6 +30,7 @@ const leaderboardRouter = require('./routes/leaderboardRouter');
 const { getInitialPrompt } = require('./database/queries/prompts');
 const { getCurrentPrompt, getNextPrompt, updateUserPromptProgress } = require('./services/prompt.service');
 const { calculateCurrentScore } = require('./utils');
+const { update } = require('./models/prompts.model');
 
 require('dotenv').config();
 
@@ -137,9 +138,9 @@ io.on('connection', async (socket) => {
             let updatedUser;
             if (nextPrompt.finalPrompt) {
                 const initialPrompt = await getInitialPrompt();
-                updatedUser = await updateUserPromptProgress(user, initialPrompt._id, nextPrompt.promptType, null, true);
-            } else {
-                updatedUser = await updateUserPromptProgress(user, nextPrompt._id, promptType, prompt.isRight, nextPrompt.initialPrompt);
+                updatedUser = await updateUserPromptProgress(user, initialPrompt._id, nextPrompt.promptType, null, null, true);
+            }  else {
+                updatedUser = await updateUserPromptProgress(user, nextPrompt._id, promptType, prompt.isRight, prompt.positiveFeedback, nextPrompt.initialPrompt);
             }
         
             prompt.score = updatedUser.score;

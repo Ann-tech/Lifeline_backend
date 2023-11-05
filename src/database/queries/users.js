@@ -56,7 +56,7 @@ async function updateUserInfo(userId, userData) {
     }
 }
 
-async function updateUserPrompt(userId, currentPromptId, promptType, isRight, initialPrompt) {
+async function updateUserPrompt(userId, currentPromptId, promptType, isRight, positiveFeedback, initialPrompt) {
     try {
         let user = await User.findById(userId);
 
@@ -76,8 +76,10 @@ async function updateUserPrompt(userId, currentPromptId, promptType, isRight, in
         const currentScore = user.scores.tornadoGame.score;
         if (isRight && promptType == 'question') {
             user.scores.tornadoGame.score = calculateCurrentScore(currentScore, promptType, isRight);
-        } else {
-            user.scores.tornadoGame.score = calculateCurrentScore(currentScore, promptType, isRight);
+        } 
+        
+        if (promptType == 'feedback' && !positiveFeedback) {
+            user.scores.tornadoGame.score = calculateCurrentScore(currentScore, promptType, isRight, positiveFeedback);
         }
 
         await user.save();
